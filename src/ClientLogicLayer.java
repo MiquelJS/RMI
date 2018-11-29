@@ -7,15 +7,15 @@ import java.rmi.RemoteException;
 public class ClientLogicLayer {
 
     private int portNum = 1099;
+    private String registryURL = "rmi://localhost:" + portNum + "/some";
 
     ClientLogicLayer() {}
 
     public void upload(String username,String fileName) throws IOException, NotBoundException {
         File file = new File(fileName);
-        String registryURL = "rmi://localhost:" + portNum + "/some";
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         byte buffer[] = new byte[(int)file.length()];
-        BufferedInputStream input = new BufferedInputStream(new FileInputStream(file.getName()));
+        BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
         input.read(buffer,0,buffer.length);
         input.close();
         fi.uploadFile(username,fileName,buffer);
@@ -23,14 +23,21 @@ public class ClientLogicLayer {
     }
 
     public void download(String username,String fileName) throws IOException, NotBoundException {
-        File file = new File(fileName);
-        String name = "rmi://localhost:" + portNum + "/some";
-        SomeInterface fi = (SomeInterface) Naming.lookup(name);
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         byte[] fileData = fi.downloadFile(username,fileName);
-        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file.getName()));
+        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileName));
         output.write(fileData,0,fileData.length);
         output.flush();
         output.close();
         System.out.println(fileName + " downloaded successfully!\n");
+    }
+
+    public boolean checkCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        return fi.checkCredentials(username,password);
+    }
+
+    public void addCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
     }
 }

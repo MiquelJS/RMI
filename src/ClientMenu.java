@@ -1,16 +1,33 @@
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class ClientMenu {
 
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    /*
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_PURPLE = "\u001B[35m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_WHITE = "\u001B[37m";
+    */
+    private static String username;
+    private static String password;
+
     public static void main(String[] argv) throws IOException, NotBoundException {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
-        System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n");
+        System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n0.Exit");
         int sign = reader.nextInt();
-        String userPass = sign(sign);
-        String username = getUsername(userPass);
-        String password = getPassword(userPass);
+        while(!sign(sign) && sign != 0) {
+            System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
+            reader = new Scanner(System.in);
+            sign = reader.nextInt();
+        }
         reader = new Scanner(System.in);  // Reading from System.in
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
                             "1.Upload multimedia    2.Download multimedia\n" +
@@ -50,25 +67,31 @@ public class ClientMenu {
         reader.close();
     }
 
-    private static String sign(int sign) {
-        if(sign == 1) {
-            Scanner reader = new Scanner(System.in);
-            System.out.println("user: ");
-            String username = reader.nextLine();
-            reader = new Scanner(System.in);
-            System.out.println("password: ");
-            String pass = reader.nextLine();
-            return username + "_" + pass;
-        } else {
-            return "ok";
+    private static boolean sign(int sign) {
+        ClientLogicLayer clientUserPass = new ClientLogicLayer();
+        if (sign == 1) { // Sign in
+            readUserAndPass();
+            try {
+                return clientUserPass.checkCredentials(username,password);
+            } catch (RemoteException|NotBoundException|MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else if(sign == 2) { // Sign up
+            readUserAndPass();
+            clientUserPass.addCredentials(username,password);
+        } else { // Exit
+            System.exit(0);
+            return false;
         }
+        return false;
     }
 
-    private static String getUsername(String userPass) {
-        return userPass.substring(0,userPass.indexOf("_"));
-    }
-
-    private static String getPassword(String userPass) {
-        return userPass.substring(userPass.indexOf("_") + 1);
+    private static void readUserAndPass() {
+        Scanner reader = new Scanner(System.in);
+        System.out.println("user: ");
+        username = reader.nextLine();
+        reader = new Scanner(System.in);
+        System.out.println("password: ");
+        password = reader.nextLine();
     }
 }

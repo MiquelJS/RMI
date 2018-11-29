@@ -42,5 +42,11 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
             return(null);
         }
     }
+
+    public boolean checkCredentials(String username, String password) {
+        ServerStorage credentials = new ServerStorage();
+        credentials.checkCredentials(username,password);
+        return true;
+    }
 }
 
