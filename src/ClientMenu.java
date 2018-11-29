@@ -18,21 +18,47 @@ public class ClientMenu {
     */
     private static String username;
     private static String password;
+    private static ClientLogicLayer clientUserPass = new ClientLogicLayer();
 
     public static void main(String[] argv) throws IOException, NotBoundException {
+        welcomeClient();
+    }
+
+    private static void welcomeClient() throws IOException, NotBoundException {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n0.Exit");
-        int sign = reader.nextInt();
-        while(!sign(sign) && sign != 0) {
-            System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
-            reader = new Scanner(System.in);
-            sign = reader.nextInt();
+        clientSign(reader.nextInt());
+        clientMainMenu();
+    }
+
+    private static void clientSign(int sign) throws IOException, NotBoundException {
+        if (sign == 1) { // Sign in
+            readUserAndPass();
+            try {
+                boolean checkCred =  clientUserPass.checkCredentials(username,password);
+                while(!checkCred) {
+                    System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
+                    readUserAndPass();
+                    checkCred = clientUserPass.checkCredentials(username,password);
+                }
+            } catch (RemoteException|NotBoundException|MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else if(sign == 2) { // Sign up
+            readUserAndPass();
+            clientUserPass.addCredentials(username,password);
+        } else { // Exit
+            System.out.println("Exiting...\n");
+            System.exit(0);
         }
-        reader = new Scanner(System.in);  // Reading from System.in
+    }
+
+    private static void clientMainMenu() throws IOException, NotBoundException {
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
-                            "1.Upload multimedia    2.Download multimedia\n" +
-                            "3.Search               4.Subscribe\n" +
-                            "0.Exit");
+                "1.Upload multimedia    2.Download multimedia\n" +
+                "3.Search               4.Subscribe\n" +
+                "0.Exit");
         int n = reader.nextInt(); // Scans the next token of the input as an int.
         String fileName;
         switch (n) {
@@ -65,25 +91,6 @@ public class ClientMenu {
         }
         // Close the Scanner once finished
         reader.close();
-    }
-
-    private static boolean sign(int sign) {
-        ClientLogicLayer clientUserPass = new ClientLogicLayer();
-        if (sign == 1) { // Sign in
-            readUserAndPass();
-            try {
-                return clientUserPass.checkCredentials(username,password);
-            } catch (RemoteException|NotBoundException|MalformedURLException e) {
-                e.printStackTrace();
-            }
-        } else if(sign == 2) { // Sign up
-            readUserAndPass();
-            clientUserPass.addCredentials(username,password);
-        } else { // Exit
-            System.exit(0);
-            return false;
-        }
-        return false;
     }
 
     private static void readUserAndPass() {

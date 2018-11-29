@@ -5,13 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
 
     public SomeImpl() throws RemoteException {
-        super( );
+        super();
     }
-
-    public String helloName(String name){
-        return "Hello " + name;
-    }
-
     public void uploadFile(String username,String fileName, byte[] buffer){
         try {
             BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileName));
@@ -43,10 +38,14 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         }
     }
 
+    public void addCredentials(String username, String password) throws IOException {
+        ServerStorage credentials = new ServerStorage();
+        credentials.addCredentials(username,password);
+    }
+
     public boolean checkCredentials(String username, String password) {
         ServerStorage credentials = new ServerStorage();
-        credentials.checkCredentials(username,password);
-        return true;
+        return credentials.checkCredentials(username,password);
     }
 }
 

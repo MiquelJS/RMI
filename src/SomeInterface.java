@@ -1,14 +1,15 @@
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface SomeInterface extends Remote {
-    // signature of first remote method
-    public void uploadFile(String username,String fileName, byte[] buffer) throws RemoteException;
 
-    public byte[] downloadFile(String username,String fileName) throws RemoteException;
+    void uploadFile(String username,String fileName, byte[] buffer) throws RemoteException;
 
-    boolean checkCredentials(String username, String password);
+    byte[] downloadFile(String username,String fileName) throws RemoteException;
 
-    // signature of other remote methods may follow
+    boolean checkCredentials(String username, String password) throws RemoteException;
+
+    void addCredentials(String username, String password) throws IOException;
 
 }

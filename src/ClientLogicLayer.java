@@ -15,11 +15,15 @@ public class ClientLogicLayer {
         File file = new File(fileName);
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         byte buffer[] = new byte[(int)file.length()];
-        BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
-        input.read(buffer,0,buffer.length);
-        input.close();
-        fi.uploadFile(username,fileName,buffer);
-        System.out.println(fileName + " uploaded successfully!\n");
+        try {
+            BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
+            input.read(buffer, 0, buffer.length);
+            input.close();
+            fi.uploadFile(username, fileName, buffer);
+            System.out.println(fileName + " uploaded successfully!\n");
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
     }
 
     public void download(String username,String fileName) throws IOException, NotBoundException {
@@ -37,7 +41,9 @@ public class ClientLogicLayer {
         return fi.checkCredentials(username,password);
     }
 
-    public void addCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {
+    public void addCredentials(String username, String password) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        fi.addCredentials(username,password);
+        System.out.println("User " + username + " created successfully!\n");
     }
 }
