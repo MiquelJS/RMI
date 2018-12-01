@@ -41,6 +41,11 @@ public class ClientLogicLayer {
         return fi.checkCredentials(username,password);
     }
 
+    public boolean checkUser(String username) throws RemoteException, NotBoundException, MalformedURLException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        return fi.checkUser(username);
+    }
+
     public void addCredentials(String username, String password) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         fi.addCredentials(username,password);
