@@ -3,6 +3,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class ClientLogicLayer {
 
@@ -35,6 +36,12 @@ public class ClientLogicLayer {
         output.flush();
         output.close();
         System.out.println(fileName + " downloaded successfully!\n");
+    }
+
+    public void search(String fileName) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        List<String> A = fi.showSearch(fileName);
+        System.out.println("Searching by " + fileName + " we have found:\n" + A);
     }
 
     public boolean checkCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {

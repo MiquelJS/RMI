@@ -1,4 +1,8 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServerStorage {
     private String path = "C:/Users/Public/";
@@ -85,5 +89,23 @@ public class ServerStorage {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<String> showMedia(String fileName) {
+        List<String> toShow = new ArrayList<>();
+        File dir = new File(path);
+        File[] directoryListing = dir.listFiles();
+        Pattern r = Pattern.compile(fileName);
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                Matcher m = r.matcher(String.valueOf(child));
+                if(m.find()){
+                    toShow.add(String.valueOf(child));
+                }
+            }
+        } else{
+            System.out.println("El directorio no existe D:");
+        }
+        return toShow;
     }
 }

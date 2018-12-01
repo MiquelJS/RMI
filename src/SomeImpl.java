@@ -1,6 +1,7 @@
 import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
 
@@ -36,6 +37,11 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
             e.printStackTrace();
             return(null);
         }
+    }
+
+    public List<String> showSearch(String fileName) {
+        ServerStorage credentials = new ServerStorage();
+        return credentials.showMedia(fileName);
     }
 
     public void addCredentials(String username, String password) throws IOException {

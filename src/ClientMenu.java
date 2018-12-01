@@ -85,7 +85,11 @@ public class ClientMenu {
                 download.download(username,fileName);
                 break;
             case 3: // Search case
+                reader = new Scanner(System.in);
                 System.out.println("Search: " + n);
+                fileName = reader.nextLine();
+                ClientLogicLayer search = new ClientLogicLayer();
+                search.search(fileName);
                 break;
             case 4: // Subscription to topic case
                 System.out.println("Subscribe: " + n);
