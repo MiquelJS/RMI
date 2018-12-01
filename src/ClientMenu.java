@@ -47,8 +47,12 @@ public class ClientMenu {
         } else if(sign == 2) { // Sign up
             readUserAndPass();
             boolean checkUser = clientUserPass.checkUser(username);
-            while(checkUser) {
-                System.out.println(ANSI_RED + "This user " + username + " already exist.\n" + ANSI_RESET);
+            while(checkUser || username.length() == 0 || password.length() == 0) {
+                if (username.length() == 0 || password.length() == 0) {
+                    System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
+                } else {
+                    System.out.println(ANSI_RED + "This user " + username + " already exist.\n" + ANSI_RESET);
+                }
                 readUserAndPass();
                 checkUser = clientUserPass.checkUser(username);
             }
