@@ -2,8 +2,8 @@ import java.io.*;
 
 public class ServerStorage {
 
-    private String filePath = "C:/Users/eduar/IdeaProjects/RMI/Client Files";
-    private String clientCredentialsPath = "C:/Users/eduar/IdeaProjects/RMI/Server Storage/";
+    private String filePath = "C:/Users/Miquel/Desktop/UdL/Computació Distribuida/RMI/Server Storage/Client Files";
+    private String clientCredentialsPath = "C:/Users/Public/";
 
     ServerStorage(){}
 
@@ -18,11 +18,22 @@ public class ServerStorage {
 
     void addCredentials(String username, String password) throws IOException {
         String credentials = username + "_" + password;
+        if(!fileExists()) System.out.println("Creating file in " + clientCredentialsPath + "ClientCredentials.txt\n");
         BufferedWriter writer = new BufferedWriter(new FileWriter(clientCredentialsPath + "ClientCredentials.txt",true));
-        writer.append('\n');
-        writer.append(credentials);
+        writer.write(credentials);
+        writer.newLine();
         writer.close();
     }
+
+    private boolean fileExists() {
+        File filesDir = new File(clientCredentialsPath);
+        File[] dirContents = filesDir.listFiles();
+        for (int i = 0; i < dirContents.length; i++) {
+            if (dirContents[i].getName().equals("ClientCredentials.txt")) return true;
+        }
+        return false;
+    }
+
     boolean checkCredentials(String username, String password) {
         try (BufferedReader br = new BufferedReader(new FileReader(clientCredentialsPath + "ClientCredentials.txt"))) {
             String line;
