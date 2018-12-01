@@ -11,8 +11,7 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         try {
             BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileDescriptions[0]));
             output.write(buffer,0,buffer.length);
-            ServerStorage storage = new ServerStorage();
-            storage.saveFile(username,buffer,fileDescriptions);
+            new ServerStorage().saveFile(username,buffer,fileDescriptions);
             output.flush();
             output.close();
         } catch(Exception e) {
@@ -43,7 +42,7 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         credentials.addCredentials(username,password);
     }
 
-    public boolean checkUser(String username) {
+    public boolean checkUser(String username) throws IOException {
         ServerStorage credentials = new ServerStorage();
         return credentials.checkUser(username);
     }
