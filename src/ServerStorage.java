@@ -47,4 +47,20 @@ public class ServerStorage {
         }
         return false;
     }
+
+    public boolean checkUser(String username) {
+            try (BufferedReader br = new BufferedReader(new FileReader(clientCredentialsPath + "ClientCredentials.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("_");
+                    String part1 = parts[0];
+                    if(part1.equals(username)) {
+                        return true;
+                    }
+                }
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

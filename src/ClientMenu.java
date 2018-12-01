@@ -46,6 +46,13 @@ public class ClientMenu {
             }
         } else if(sign == 2) { // Sign up
             readUserAndPass();
+            boolean checkUser = clientUserPass.checkUser(username);
+            while(checkUser) {
+                System.out.println(ANSI_RED + "This user " + username + " already exist.\n" + ANSI_RESET);
+                readUserAndPass();
+                checkUser = clientUserPass.checkUser(username);
+            }
+            System.out.println("HEY4");
             clientUserPass.addCredentials(username,password);
         } else { // Exit
             System.out.println("Exiting...\n");
