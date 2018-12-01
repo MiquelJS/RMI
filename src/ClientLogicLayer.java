@@ -11,7 +11,8 @@ public class ClientLogicLayer {
 
     ClientLogicLayer() {}
 
-    public void upload(String username,String fileName) throws IOException, NotBoundException {
+    public void upload(String username,String[] fileDescriptions) throws IOException, NotBoundException {
+        String fileName = fileDescriptions[0];
         File file = new File(fileName);
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         byte buffer[] = new byte[(int)file.length()];
@@ -19,7 +20,7 @@ public class ClientLogicLayer {
             BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
             input.read(buffer, 0, buffer.length);
             input.close();
-            fi.uploadFile(username, fileName, buffer);
+            fi.uploadFile(username, fileDescriptions, buffer);
             System.out.println(fileName + " uploaded successfully!\n");
         } catch (FileNotFoundException e) {
             System.out.println(e);

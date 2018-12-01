@@ -7,12 +7,12 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
     public SomeImpl() throws RemoteException {
         super();
     }
-    public void uploadFile(String username,String fileName, byte[] buffer){
+    public void uploadFile(String username,String[] fileDescriptions, byte[] buffer){
         try {
-            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileName));
+            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileDescriptions[0]));
             output.write(buffer,0,buffer.length);
             ServerStorage storage = new ServerStorage();
-            storage.saveFile(username,buffer,fileName);
+            storage.saveFile(username,buffer,fileDescriptions);
             output.flush();
             output.close();
         } catch(Exception e) {
@@ -43,7 +43,6 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         credentials.addCredentials(username,password);
     }
 
-    @Override
     public boolean checkUser(String username) {
         ServerStorage credentials = new ServerStorage();
         return credentials.checkUser(username);
