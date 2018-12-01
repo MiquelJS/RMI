@@ -28,53 +28,60 @@ public class ClientMenu {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n0.Exit");
         clientSign(reader.nextInt());
-        clientMainMenu();
+        int clientOption = clientMainMenu();
+        /*
+        while(clientOption != 0) {
+            clientOption = clientMainMenu();
+        }
+        */
     }
 
     private static void clientSign(int sign) throws IOException, NotBoundException {
-        if (sign == 1) { // Sign in
-            readUserAndPass();
-            try {
-                boolean checkCred =  clientUserPass.checkCredentials(username,password);
-                while(!checkCred) {
-                    System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
-                    readUserAndPass();
-                    checkCred = clientUserPass.checkCredentials(username,password);
-                }
-            } catch (RemoteException|NotBoundException|MalformedURLException e) {
-                e.printStackTrace();
-            }
-        } else if(sign == 2) { // Sign up
-            readUserAndPass();
-            boolean checkUser = clientUserPass.checkUser(username);
-            while(checkUser || username.length() == 0 || password.length() == 0) {
-                if (username.length() == 0 || password.length() == 0) {
-                    System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
-                } else {
-                    System.out.println(ANSI_RED + "This user " + username + " already exist.\n" + ANSI_RESET);
-                }
+        switch (sign) {
+            case 1: // Sign in
                 readUserAndPass();
-                checkUser = clientUserPass.checkUser(username);
-            }
-            clientUserPass.addCredentials(username,password);
-        } else { // Exit
+                try {
+                    boolean checkCred =  clientUserPass.checkCredentials(username,password);
+                    while(!checkCred) {
+                        System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
+                        readUserAndPass();
+                        checkCred = clientUserPass.checkCredentials(username,password);
+                    }
+                } catch (RemoteException|NotBoundException|MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 2:// Sign up
+                readUserAndPass();
+                boolean checkUser = clientUserPass.checkUser(username);
+                while(checkUser || username.length() == 0 || password.length() == 0) {
+                    if (username.length() == 0 || password.length() == 0) {
+                        System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
+                    } else {
+                        System.out.println(ANSI_RED + "This user " + username + " already exist.\n" + ANSI_RESET);
+                    }
+                    readUserAndPass();
+                    checkUser = clientUserPass.checkUser(username);
+                }
+                clientUserPass.addCredentials(username,password);
+                break;
+            default:// Exit
             System.out.println("Exiting...\n");
             System.exit(0);
         }
     }
 
-    private static void clientMainMenu() throws IOException, NotBoundException {
+    private static int clientMainMenu() throws IOException, NotBoundException {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
                 "1.Upload multimedia    2.Download multimedia\n" +
                 "3.Search               4.Subscribe\n" +
-                "0.Exit");
+                "0.Logout");
         int n = reader.nextInt(); // Scans the next token of the input as an int.
-        String fileName;
         switch (n) {
             case 0:
-                System.out.println("Exiting...\n");
-                System.exit(0);
+                System.out.println("Logging out...\n");
+                break;
             case 1: // Upload case
                 // fileDescriptions have: [file,title,topic]
                 String[] fileDescriptions = uploadFileDescriptions();
@@ -84,7 +91,7 @@ public class ClientMenu {
             case 2: // Download case
                 reader = new Scanner(System.in);
                 System.out.println("What file do you want to download?\n");
-                fileName = reader.nextLine();
+                String fileName = reader.nextLine();
                 ClientLogicLayer download = new ClientLogicLayer();
                 download.download(username,fileName);
                 break;
@@ -96,10 +103,10 @@ public class ClientMenu {
                 break;
             default:
                 System.out.println("Enter one of the options listed above.\n");
-                System.exit(0);
         }
         // Close the Scanner once finished
         reader.close();
+        return n;
     }
 
     private static String[] uploadFileDescriptions() {
