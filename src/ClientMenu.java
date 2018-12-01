@@ -52,7 +52,6 @@ public class ClientMenu {
                 readUserAndPass();
                 checkUser = clientUserPass.checkUser(username);
             }
-            System.out.println("HEY4");
             clientUserPass.addCredentials(username,password);
         } else { // Exit
             System.out.println("Exiting...\n");
@@ -73,11 +72,10 @@ public class ClientMenu {
                 System.out.println("Exiting...\n");
                 System.exit(0);
             case 1: // Upload case
-                reader = new Scanner(System.in);
-                System.out.println("What file do you want to upload? (File must be inside the project)\n");
-                fileName = reader.nextLine();
+                // fileDescriptions have: [file,title,topic]
+                String[] fileDescriptions = uploadFileDescriptions();
                 ClientLogicLayer upload = new ClientLogicLayer();
-                upload.upload(username,fileName);
+                upload.upload(username,fileDescriptions);
                 break;
             case 2: // Download case
                 reader = new Scanner(System.in);
@@ -98,6 +96,23 @@ public class ClientMenu {
         }
         // Close the Scanner once finished
         reader.close();
+    }
+
+    private static String[] uploadFileDescriptions() {
+        String[] fileDescriptions = new String[3];
+        Scanner reader = new Scanner(System.in);
+        System.out.println("What file do you want to upload? (File must be inside the project)\n");
+        fileDescriptions[0] = reader.nextLine();
+
+        reader = new Scanner(System.in);
+        System.out.println("What title does your file have?\n");
+        fileDescriptions[1] = reader.nextLine();
+
+        reader = new Scanner(System.in);
+        System.out.println("And what topic?\n");
+        fileDescriptions[2] = reader.nextLine();
+
+        return fileDescriptions;
     }
 
     private static void readUserAndPass() {
