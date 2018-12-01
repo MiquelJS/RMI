@@ -30,10 +30,12 @@ public class ServerStorage {
         f.write(buffer);
 
         // Creating file with the title and topic in newPath path
-        BufferedWriter descriptions = new BufferedWriter(new FileWriter(newPath + username + "_" + fileName));
+        BufferedWriter descriptions = new BufferedWriter(
+                new FileWriter(newPath + username + "_" + fileName.substring(0,fileName.indexOf(".")) + "_description.txt"));
         descriptions.write("title: " + title);
         descriptions.newLine();
         descriptions.write("topic: " + topic);
+        descriptions.close();
     }
 
     void downloadFile(String username, String fileName) {
