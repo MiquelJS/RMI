@@ -14,5 +14,5 @@ public interface SomeInterface extends Remote {
 
     boolean checkUser(String username) throws IOException;
 
-    void printSearch(String fileName) throws RemoteException, IOException;
+    void showSearch(String fileName, String type) throws RemoteException, IOException;
 }

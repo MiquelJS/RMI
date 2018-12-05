@@ -42,20 +42,22 @@ public class ServerStorage {
 
     }
 
-    void showMedia(String filename) throws IOException {
-        System.out.println("File Searching: " + filename);
+    void showMedia(String filename, String type) throws IOException {
         File[] files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
-        readFiles(files, filename);
+        readFiles(files, filename, type);
     }
 
-    public static void readFiles(File[] files, String filename) throws IOException {
+    public static void readFiles(File[] files, String filename, String type) throws IOException {
         for (File file : files) {
             if (file.isDirectory()) {
-                readFiles(file.listFiles(), filename); // Calls same method again.
-                System.out.println(file.getName());
+                readFiles(file.listFiles(), filename, type); // Calls same method again.
             } else {
-                System.out.println("Looking into file: " + file.getName());
-                String lookingFor = "title: ".concat(filename);
+                String lookingFor;
+                if(type.equals("ti")) {
+                    lookingFor = "title: ".concat(filename);
+                } else {
+                    lookingFor = "topic: ".concat(filename);
+                }
                 String st;
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 while (( st = br.readLine()) != null){

@@ -47,9 +47,9 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         return credentials.checkUser(username);
     }
 
-    public void printSearch(String fileName) throws IOException {
+    public void showSearch(String fileName, String type) throws IOException {
         ServerStorage credentials = new ServerStorage();
-        credentials.showMedia(fileName);
+        credentials.showMedia(fileName, type);
     }
 
     public boolean checkCredentials(String username, String password) {
