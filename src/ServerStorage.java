@@ -11,7 +11,8 @@ public class ServerStorage {
     ServerStorage(){}
 
     void saveFile(String username, byte[] buffer, String[] fileDescriptions) throws IOException {
-        String fileName = fileDescriptions[0];
+        String filePath = fileDescriptions[0];
+        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
         String title = fileDescriptions[1];
         String topic = fileDescriptions[2];
 

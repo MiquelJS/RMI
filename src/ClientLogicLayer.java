@@ -12,12 +12,13 @@ public class ClientLogicLayer {
     ClientLogicLayer() {}
 
     public void upload(String username,String[] fileDescriptions) throws IOException, NotBoundException {
-        String fileName = fileDescriptions[0];
-        File file = new File(fileName);
+        String filePath = fileDescriptions[0];
+        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
+        File file = new File(filePath);
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         byte buffer[] = new byte[(int)file.length()];
         try {
-            BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
+            BufferedInputStream input = new BufferedInputStream(new FileInputStream(filePath));
             input.read(buffer, 0, buffer.length);
             input.close();
             fi.uploadFile(username, fileDescriptions, buffer);

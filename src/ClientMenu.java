@@ -1,3 +1,8 @@
+import javafx.stage.FileChooser;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
@@ -58,7 +63,7 @@ public class ClientMenu {
                     if (username.length() == 0 || password.length() == 0) {
                         System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
                     } else {
-                        System.out.println(ANSI_RED + "This user " + username + " already exist.\n" + ANSI_RESET);
+                        System.out.println(ANSI_RED + "This user already exist.\n" + ANSI_RESET);
                     }
                     readUserAndPass();
                     checkUser = clientUserPass.checkUser(username);
@@ -84,7 +89,7 @@ public class ClientMenu {
                 break;
             case 1: // Upload case
                 // fileDescriptions have: [file,title,topic]
-                String[] fileDescriptions = uploadFileDescriptions();
+                String[] fileDescriptions = uploadFileWithBrowser();
                 ClientLogicLayer upload = new ClientLogicLayer();
                 upload.upload(username,fileDescriptions);
                 break;
@@ -124,6 +129,32 @@ public class ClientMenu {
         fileDescriptions[2] = reader.nextLine();
 
         return fileDescriptions;
+    }
+
+    private static String[] uploadFileWithBrowser(){
+        String[] fileDescriptions = new String[3];
+        System.out.println("What file do you want to upload?\n");
+        //Create a file chooser
+        JFileChooser fc = new JFileChooser();
+        fc.setCurrentDirectory(new File(System.getProperty("user.home")));
+        //Parent is an instance of a Component such as JFrame, JDialog or JPanel which is parent of the dialog
+        int returnVal = fc.showOpenDialog(fc);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            System.out.println("You selected the file: " + fc.getSelectedFile().getName() + "\n");
+            fileDescriptions[0] = fc.getSelectedFile().getAbsolutePath();
+
+            Scanner reader = new Scanner(System.in);
+            System.out.println("What title does your file have?\n");
+            fileDescriptions[1] = reader.nextLine();
+
+            reader = new Scanner(System.in);
+            System.out.println("And what topic?\n");
+            fileDescriptions[2] = reader.nextLine();
+            return fileDescriptions;
+        } else {
+            System.exit(0);
+        }
+        return null;
     }
 
     private static void readUserAndPass() {
