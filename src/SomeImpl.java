@@ -42,9 +42,13 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         credentials.addCredentials(username,password);
     }
 
-    public boolean checkUser(String username) throws IOException {
+    public boolean checkUser(String username) {
         ServerStorage credentials = new ServerStorage();
         return credentials.checkUser(username);
+    }
+
+    public boolean checkFile(String username, String fileName) {
+        return new ServerStorage().checkFile(username, fileName);
     }
 
     public boolean checkCredentials(String username, String password) {

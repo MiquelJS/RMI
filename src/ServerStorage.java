@@ -1,4 +1,6 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ServerStorage {
 
@@ -105,5 +107,13 @@ public class ServerStorage {
             if (dirContents[i].getName().equals(nameToSearch)) return true;
         }
         return false;
+    }
+
+    public boolean checkFile(String username, String fileName) {
+        String filePath = path + "Server Storage/Client Files/"
+                        + username + "/" + username + "_"
+                        + fileName.substring(0,fileName.lastIndexOf(".")) + "/";
+        System.out.println(filePath);
+        return Files.exists(Paths.get(filePath));
     }
 }

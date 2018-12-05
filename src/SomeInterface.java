@@ -13,4 +13,6 @@ public interface SomeInterface extends Remote {
     void addCredentials(String username, String password) throws IOException;
 
     boolean checkUser(String username) throws IOException;
+
+    boolean checkFile(String username, String fileName) throws IOException;
 }

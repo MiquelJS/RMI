@@ -53,4 +53,9 @@ public class ClientLogicLayer {
         fi.addCredentials(username,password);
         System.out.println("User " + username + " created successfully!\n");
     }
+
+    public boolean checkFile(String username, String fileName) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        return fi.checkFile(username, fileName);
+    }
 }

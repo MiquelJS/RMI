@@ -23,7 +23,7 @@ public class ClientMenu {
     */
     private static String username;
     private static String password;
-    private static ClientLogicLayer clientUserPass = new ClientLogicLayer();
+    private static ClientLogicLayer clientLogicLayer = new ClientLogicLayer();
 
     public static void main(String[] argv) throws IOException, NotBoundException {
         welcomeClient();
@@ -46,11 +46,11 @@ public class ClientMenu {
             case 1: // Sign in
                 readUserAndPass();
                 try {
-                    boolean checkCred =  clientUserPass.checkCredentials(username,password);
+                    boolean checkCred =  clientLogicLayer.checkCredentials(username,password);
                     while(!checkCred) {
                         System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
                         readUserAndPass();
-                        checkCred = clientUserPass.checkCredentials(username,password);
+                        checkCred = clientLogicLayer.checkCredentials(username,password);
                     }
                 } catch (RemoteException|NotBoundException|MalformedURLException e) {
                     e.printStackTrace();
@@ -58,7 +58,7 @@ public class ClientMenu {
                 break;
             case 2:// Sign up
                 readUserAndPass();
-                boolean checkUser = clientUserPass.checkUser(username);
+                boolean checkUser = clientLogicLayer.checkUser(username);
                 while(checkUser || username.length() == 0 || password.length() == 0) {
                     if (username.length() == 0 || password.length() == 0) {
                         System.out.println(ANSI_RED + "Incorrect username or password.\n" + ANSI_RESET);
@@ -66,9 +66,9 @@ public class ClientMenu {
                         System.out.println(ANSI_RED + "This user already exist.\n" + ANSI_RESET);
                     }
                     readUserAndPass();
-                    checkUser = clientUserPass.checkUser(username);
+                    checkUser = clientLogicLayer.checkUser(username);
                 }
-                clientUserPass.addCredentials(username,password);
+                clientLogicLayer.addCredentials(username,password);
                 break;
             default:// Exit
             System.out.println("Exiting...\n");
@@ -114,24 +114,7 @@ public class ClientMenu {
         return n;
     }
 
-    private static String[] uploadFileDescriptions() {
-        String[] fileDescriptions = new String[3];
-        Scanner reader = new Scanner(System.in);
-        System.out.println("What file do you want to upload? (File must be inside the project)\n");
-        fileDescriptions[0] = reader.nextLine();
-
-        reader = new Scanner(System.in);
-        System.out.println("What title does your file have?\n");
-        fileDescriptions[1] = reader.nextLine();
-
-        reader = new Scanner(System.in);
-        System.out.println("And what topic?\n");
-        fileDescriptions[2] = reader.nextLine();
-
-        return fileDescriptions;
-    }
-
-    private static String[] uploadFileWithBrowser(){
+    private static String[] uploadFileWithBrowser() throws IOException, NotBoundException {
         String[] fileDescriptions = new String[3];
         System.out.println("What file do you want to upload?\n");
         //Create a file chooser
@@ -140,10 +123,19 @@ public class ClientMenu {
         //Parent is an instance of a Component such as JFrame, JDialog or JPanel which is parent of the dialog
         int returnVal = fc.showOpenDialog(fc);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
+            Scanner reader;
             System.out.println("You selected the file: " + fc.getSelectedFile().getName() + "\n");
             fileDescriptions[0] = fc.getSelectedFile().getAbsolutePath();
 
-            Scanner reader = new Scanner(System.in);
+            if(clientLogicLayer.checkFile(username, fc.getSelectedFile().getName())) {
+                reader = new Scanner(System.in);
+                System.out.println("This file already exist, do you want to continue? [y/n]\n");
+                if(!reader.nextLine().equals("y")) {
+                    System.exit(0);
+                }
+            }
+
+            reader = new Scanner(System.in);
             System.out.println("What title does your file have?\n");
             fileDescriptions[1] = reader.nextLine();
 
