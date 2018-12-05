@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public interface SomeInterface extends Remote {
 
@@ -13,7 +12,7 @@ public interface SomeInterface extends Remote {
 
     void addCredentials(String username, String password) throws IOException;
 
-    boolean checkUser(String username)throws RemoteException;
+    boolean checkUser(String username) throws IOException;
 
-    List<String> showSearch(String fileName);
+    void printSearch(String fileName) throws RemoteException, IOException;
 }

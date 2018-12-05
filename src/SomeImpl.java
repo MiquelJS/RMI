@@ -1,7 +1,6 @@
 import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 
 public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
 
@@ -12,8 +11,7 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         try {
             BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileDescriptions[0]));
             output.write(buffer,0,buffer.length);
-            ServerStorage storage = new ServerStorage();
-            storage.saveFile(username,buffer,fileDescriptions);
+            new ServerStorage().saveFile(username,buffer,fileDescriptions);
             output.flush();
             output.close();
         } catch(Exception e) {
@@ -39,11 +37,6 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         }
     }
 
-    public List<String> showSearch(String fileName) {
-        ServerStorage credentials = new ServerStorage();
-        return credentials.showMedia(fileName);
-    }
-
     public void addCredentials(String username, String password) throws IOException {
         ServerStorage credentials = new ServerStorage();
         credentials.addCredentials(username,password);
@@ -52,6 +45,11 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
     public boolean checkUser(String username) {
         ServerStorage credentials = new ServerStorage();
         return credentials.checkUser(username);
+    }
+
+    public void printSearch(String fileName) throws IOException {
+        ServerStorage credentials = new ServerStorage();
+        credentials.showMedia(fileName);
     }
 
     public boolean checkCredentials(String username, String password) {
