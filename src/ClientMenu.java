@@ -1,3 +1,4 @@
+import com.sun.deploy.util.StringUtils;
 import javafx.stage.FileChooser;
 
 import javax.swing.*;
@@ -32,7 +33,11 @@ public class ClientMenu {
     private static void welcomeClient() throws IOException, NotBoundException {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n0.Exit");
-        clientSign(reader.nextInt());
+        String n = reader.nextLine(); // Scans the next token of the input as an int.
+        int userNumber = 0; // The user return number
+        if (isNumeric(n)) { userNumber = Integer.parseInt(n);}
+        else { System.exit(0);}
+        clientSign(userNumber);
         int clientOption = clientMainMenu();
         /*
         while(clientOption != 0) {
@@ -82,8 +87,14 @@ public class ClientMenu {
                 "1.Upload multimedia    2.Download multimedia\n" +
                 "3.Search               4.Subscribe\n" +
                 "0.Logout");
-        int n = reader.nextInt(); // Scans the next token of the input as an int.
-        switch (n) {
+        String n = reader.nextLine(); // Scans the next token of the input as an int.
+        int userNumber = 0; // The user return number
+        if (isNumeric(n)) {
+            userNumber = Integer.parseInt(n);
+        } else {
+            System.exit(0);
+        }
+        switch (userNumber) {
             case 0:
                 System.out.println("Logging out...\n");
                 break;
@@ -111,7 +122,11 @@ public class ClientMenu {
         }
         // Close the Scanner once finished
         reader.close();
-        return n;
+        return userNumber;
+    }
+
+    private static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
 
     private static String[] uploadFileWithBrowser() throws IOException, NotBoundException {

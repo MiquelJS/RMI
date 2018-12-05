@@ -110,10 +110,9 @@ public class ServerStorage {
     }
 
     public boolean checkFile(String username, String fileName) {
-        String filePath = path + "Server Storage/Client Files/"
+        String serverFilePath = path + "Server Storage/Client Files/"
                         + username + "/" + username + "_"
                         + fileName.substring(0,fileName.lastIndexOf(".")) + "/";
-        System.out.println(filePath);
-        return Files.exists(Paths.get(filePath));
+        return Files.exists(Paths.get(serverFilePath));
     }
 }
