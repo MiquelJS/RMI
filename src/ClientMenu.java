@@ -75,7 +75,7 @@ public class ClientMenu {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
                 "1.Upload multimedia    2.Download multimedia\n" +
-                "3.Search  title        4.Search  topic\n" +
+                "3.Search  file        4.Search  topic\n" +
                 "5.Subscribe            0.Logout");
         int n = reader.nextInt(); // Scans the next token of the input as an int.
         switch (n) {
@@ -97,17 +97,17 @@ public class ClientMenu {
                 break;
             case 3: // Search Title case
                 reader = new Scanner(System.in);
-                System.out.println("What file do you want to search by title?");
+                System.out.println("What file do you want to search?");
                 String fileName2 = reader.nextLine();
                 ClientLogicLayer search = new ClientLogicLayer();
-                search.search(username, fileName2, "ti");
+                search.search(fileName2, "ti");
                 break;
             case 4: // Search Topic case
                 reader = new Scanner(System.in);
                 System.out.println("What file do you want to search by topic?");
                 fileName2 = reader.nextLine();
                 search = new ClientLogicLayer();
-                search.search(username, fileName2, "to");
+                search.search(fileName2, "to");
                 break;
             case 5: // Subscription to topic case
                 System.out.println("Subscribe: " + n);

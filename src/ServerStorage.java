@@ -46,42 +46,54 @@ public class ServerStorage {
         f.write(buffer);
     }
 
-    void showMedia(String username, String filename, String type) throws IOException {
+    void showMedia(String filename, String type) throws IOException {
         File[] files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
-        readFiles(username, files, filename, type);
+        readFiles(files, filename, type);
     }
 
-    public static void readFiles(String username, File[] files, String filename, String type) throws IOException {
-        String lookingFor;
+    public static ArrayList<String> readFiles(File[] files, String filename, String type) throws IOException {
+        ArrayList<String> listToReturn = new ArrayList<>();
+
         if(type.equals("ti")) {
-            lookingFor = "title: ".concat(filename);
             for (File file : files) {
                 if (file.isDirectory()) {
-                    readFiles(username, file.listFiles(), filename, type); // Calls same method again.
+                    readFiles(file.listFiles(), filename, type); // Calls same method again.
                 }else {
-                    if (file.getName().equals(username + "_" + filename)){
-                        System.out.println(file);
+                    if ((file.getName().contains(filename) && file.getName().contains("description.txt"))){
+                        String st;
+                        BufferedReader br = new BufferedReader(new FileReader(file));
+                        while (( st = br.readLine()) != null){
+                            String[] toReturn = st.split("title: ");
+                            listToReturn.add(toReturn[1]);
+                            break;
+                        }
                     }
                 }
             }
         } else {
-            lookingFor = "topic: ".concat(filename);
             for (File file : files) {
                 if (file.isDirectory()) {
-                    readFiles(username, file.listFiles(), filename, type); // Calls same method again.
+                    readFiles(file.listFiles(), filename, type); // Calls same method again.
                 } else {
                     String st;
                     ArrayList<String> ar = new ArrayList<>();
                     BufferedReader br = new BufferedReader(new FileReader(file));
                     while (( st = br.readLine()) != null){
-                        ar.add(st);
-                        if (st.equals(lookingFor)){
-                            System.out.println("We found a match! :" + ar.get(0));
+                        String[] toReturn = st.split("title: ");
+                        for (String str : toReturn){
+                            if((!ar.contains(str))){
+                                ar.add(str);
+                            }
+                        }
+                        if (st.contains(filename) && st.contains("topic:")){
+                            listToReturn.add(ar.get(1));
                         }
                     }
                 }
             }
         }
+
+        return listToReturn;
     }
 
     void addCredentials(String username, String password) throws IOException {
