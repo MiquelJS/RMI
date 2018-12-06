@@ -100,14 +100,14 @@ public class ClientMenu {
                 System.out.println("What file do you want to search?");
                 String fileName2 = reader.nextLine();
                 ClientLogicLayer search = new ClientLogicLayer();
-                search.search(fileName2, "ti");
+                System.out.println("List of titles related to your search: " + search.search(fileName2, "ti"));
                 break;
             case 4: // Search Topic case
                 reader = new Scanner(System.in);
                 System.out.println("What file do you want to search by topic?");
                 fileName2 = reader.nextLine();
                 search = new ClientLogicLayer();
-                search.search(fileName2, "to");
+                System.out.println("List of titles related to your search: " + search.search(fileName2, "to"));
                 break;
             case 5: // Subscription to topic case
                 System.out.println("Subscribe: " + n);

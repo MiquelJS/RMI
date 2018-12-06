@@ -1,6 +1,7 @@
 import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
 
@@ -46,9 +47,9 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         return credentials.checkUser(username);
     }
 
-    public void showSearch(String fileName, String type) throws IOException {
+    public ArrayList<String> showSearch(String fileName, String type) throws IOException {
         ServerStorage credentials = new ServerStorage();
-        credentials.showMedia(fileName, type);
+        return credentials.showMedia(fileName, type);
     }
 
     public boolean checkCredentials(String username, String password) {

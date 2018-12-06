@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface SomeInterface extends Remote {
 
@@ -14,5 +15,5 @@ public interface SomeInterface extends Remote {
 
     boolean checkUser(String username) throws IOException;
 
-    void showSearch(String fileName, String type) throws RemoteException, IOException;
+    ArrayList<String> showSearch(String fileName, String type) throws RemoteException, IOException;
 }

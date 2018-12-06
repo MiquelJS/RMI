@@ -8,6 +8,8 @@ public class ServerStorage {
     private static final String ANSI_GREEN = "\u001B[32m";
 
     private String path = "C:/Users/Public/";
+    public static ArrayList<String> listToReturn;
+
 
     ServerStorage(){}
 
@@ -46,13 +48,14 @@ public class ServerStorage {
         f.write(buffer);
     }
 
-    void showMedia(String filename, String type) throws IOException {
+    ArrayList<String> showMedia(String filename, String type) throws IOException {
+        listToReturn = new ArrayList<>();
         File[] files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
         readFiles(files, filename, type);
+        return listToReturn;
     }
 
-    public static ArrayList<String> readFiles(File[] files, String filename, String type) throws IOException {
-        ArrayList<String> listToReturn = new ArrayList<>();
+    void readFiles(File[] files, String filename, String type) throws IOException {
 
         if(type.equals("ti")) {
             for (File file : files) {
@@ -92,8 +95,6 @@ public class ServerStorage {
                 }
             }
         }
-
-        return listToReturn;
     }
 
     void addCredentials(String username, String password) throws IOException {
