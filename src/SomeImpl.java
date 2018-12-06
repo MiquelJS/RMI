@@ -26,8 +26,7 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
             byte buffer[] = new byte[(int)file.length()];
             BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
             input.read(buffer,0,buffer.length);
-            ServerStorage storage = new ServerStorage();
-            storage.downloadFile(username,fileName);
+            new ServerStorage().downloadFile(buffer);
             input.close();
             return(buffer);
         } catch(Exception e){
@@ -47,9 +46,9 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         return credentials.checkUser(username);
     }
 
-    public void showSearch(String fileName, String type) throws IOException {
+    public void showSearch(String username, String fileName, String type) throws IOException {
         ServerStorage credentials = new ServerStorage();
-        credentials.showMedia(fileName, type);
+        credentials.showMedia( username, fileName, type);
     }
 
     public boolean checkCredentials(String username, String password) {

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class ServerStorage {
 
@@ -38,31 +39,45 @@ public class ServerStorage {
         descriptions.close();
     }
 
-    void downloadFile(String username, String fileName) {
-
+    void downloadFile(byte[] buffer) throws IOException {
+        String userName = System.getProperty("user.name");
+        String downloadPath = "C:/Users/Public/";
+        FileOutputStream f = new FileOutputStream(downloadPath);
+        f.write(buffer);
     }
 
-    void showMedia(String filename, String type) throws IOException {
+    void showMedia(String username, String filename, String type) throws IOException {
         File[] files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
-        readFiles(files, filename, type);
+        readFiles(username, files, filename, type);
     }
 
-    public static void readFiles(File[] files, String filename, String type) throws IOException {
-        for (File file : files) {
-            if (file.isDirectory()) {
-                readFiles(file.listFiles(), filename, type); // Calls same method again.
-            } else {
-                String lookingFor;
-                if(type.equals("ti")) {
-                    lookingFor = "title: ".concat(filename);
-                } else {
-                    lookingFor = "topic: ".concat(filename);
+    public static void readFiles(String username, File[] files, String filename, String type) throws IOException {
+        String lookingFor;
+        if(type.equals("ti")) {
+            lookingFor = "title: ".concat(filename);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    readFiles(username, file.listFiles(), filename, type); // Calls same method again.
+                }else {
+                    if (file.getName().equals(username + "_" + filename)){
+                        System.out.println(file);
+                    }
                 }
-                String st;
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                while (( st = br.readLine()) != null){
-                    if (st.equals(lookingFor)){
-                        System.out.println("We found a match! in :" + file);
+            }
+        } else {
+            lookingFor = "topic: ".concat(filename);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    readFiles(username, file.listFiles(), filename, type); // Calls same method again.
+                } else {
+                    String st;
+                    ArrayList<String> ar = new ArrayList<>();
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+                    while (( st = br.readLine()) != null){
+                        ar.add(st);
+                        if (st.equals(lookingFor)){
+                            System.out.println("We found a match! :" + ar.get(0));
+                        }
                     }
                 }
             }

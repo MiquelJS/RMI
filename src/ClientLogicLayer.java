@@ -37,9 +37,9 @@ public class ClientLogicLayer {
         System.out.println(fileName + " downloaded successfully!\n");
     }
 
-    public void search(String fileName, String type) throws IOException, NotBoundException {
+    public void search(String username, String fileName, String type) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
-        fi.showSearch(fileName, type);
+        fi.showSearch(username, fileName, type);
     }
 
     public boolean checkCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {
