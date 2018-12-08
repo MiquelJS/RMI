@@ -41,12 +41,19 @@ public class ServerStorage {
         descriptions.close();
     }
 
-    String downloadFile(String fileTitle) throws IOException {
+    ArrayList<Object> downloadFile(String fileTitle) throws IOException {
         listToReturn = new ArrayList<>();
         File[] files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
         FindFileByTitle(files, fileTitle);
-        fileToReturn.add(path);
-        return fileToReturn.get(0);
+
+        ArrayList<Object> toReturn = new ArrayList<>();
+        String[] type = fileToReturn.get(0).split("\\.");
+
+        toReturn.add(path);
+        File pathToDownload = new File("C:/Users/Public/"+ "/" + fileTitle + "." + type[type.length - 1]);
+        toReturn.add(pathToDownload );
+        toReturn.add(fileToReturn.get(0));
+        return toReturn;
     }
 
     File FindFileByTitle (File[] files, String fileTitle) throws IOException  {
@@ -56,12 +63,12 @@ public class ServerStorage {
                 FindFileByTitle(file.listFiles(), fileTitle); // Calls same method again.
             }else {
                 fileToReturn.add(String.valueOf(file));
-                if ((file.getName().contains("description.txt"))){
+                if ((file.getName().contains("description.txt")) && listToReturn.size() < 1){
                     String st;
                     BufferedReader br = new BufferedReader(new FileReader(file));
                     while (( st = br.readLine()) != null){
                         String[] toCompare = st.split("title: ");
-                        if(toCompare[1].equals(fileTitle)){
+                        if(String.valueOf(toCompare[1]).equals(fileTitle)){
                             listToReturn.add(String.valueOf(file));
                             break;
                         }

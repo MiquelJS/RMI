@@ -30,9 +30,10 @@ public class ClientLogicLayer {
 
     public void download(String fileTitle) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
-        byte[] buffer = fi.downloadFile(fileTitle);
+        ArrayList<Object> toReturn = fi.downloadFile(fileTitle);
+        byte[] buffer = (byte[]) toReturn.get(toReturn.size() - 1);
         try{
-            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("C:/Users/Public/" + fileTitle + ".txt"));
+            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream((File) toReturn.get(1)));
             output.write(buffer,0,buffer.length);
             output.flush();
             output.close();

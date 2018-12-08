@@ -7,7 +7,7 @@ public interface SomeInterface extends Remote {
 
     void uploadFile(String username,String[] fileDescriptions, byte[] buffer) throws RemoteException;
 
-    byte[] downloadFile(String fileTitle) throws RemoteException;
+    ArrayList<Object> downloadFile(String fileTitle) throws RemoteException;
 
     boolean checkCredentials(String username, String password) throws RemoteException;
 
