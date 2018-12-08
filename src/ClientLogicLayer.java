@@ -28,14 +28,19 @@ public class ClientLogicLayer {
         }
     }
 
-    public void download(String username,String fileName) throws IOException, NotBoundException {
+    public void download(String fileTitle) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
-        byte[] fileData = fi.downloadFile(username,fileName);
-        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileName));
-        output.write(fileData,0,fileData.length);
-        output.flush();
-        output.close();
-        System.out.println(fileName + " downloaded successfully!\n");
+        byte[] buffer = fi.downloadFile(fileTitle);
+        try{
+            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("C:/Users/Public/" + fileTitle + ".txt"));
+            output.write(buffer,0,buffer.length);
+            output.flush();
+            output.close();
+            System.out.println(fileTitle + " download successfully!\n");
+        } catch(Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> search(String fileName, String type) throws IOException, NotBoundException {

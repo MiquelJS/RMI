@@ -21,13 +21,13 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         }
     }
 
-    public byte[] downloadFile(String username,String fileName) {
+    public byte[] downloadFile(String fileTitle) {
         try {
-            File file = new File(fileName);
+            File file = new File(new ServerStorage().downloadFile(fileTitle));
+            System.out.println(file);
             byte buffer[] = new byte[(int)file.length()];
-            BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
+            BufferedInputStream input = new BufferedInputStream(new FileInputStream(file));
             input.read(buffer,0,buffer.length);
-            new ServerStorage().downloadFile(buffer);
             input.close();
             return(buffer);
         } catch(Exception e){

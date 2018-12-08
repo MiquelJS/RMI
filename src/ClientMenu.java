@@ -83,7 +83,6 @@ public class ClientMenu {
                 System.out.println("Logging out...\n");
                 break;
             case 1: // Upload case
-                // fileDescriptions have: [file,title,topic]
                 String[] fileDescriptions = uploadFileDescriptions();
                 ClientLogicLayer upload = new ClientLogicLayer();
                 upload.upload(username,fileDescriptions);
@@ -91,23 +90,23 @@ public class ClientMenu {
             case 2: // Download case
                 reader = new Scanner(System.in);
                 System.out.println("What file do you want to download?\n");
-                String fileName = reader.nextLine();
+                String fileTitle = reader.nextLine();
                 ClientLogicLayer download = new ClientLogicLayer();
-                download.download(username,fileName);
+                download.download(fileTitle);
                 break;
             case 3: // Search Title case
                 reader = new Scanner(System.in);
                 System.out.println("What file do you want to search?");
-                String fileName2 = reader.nextLine();
+                String fileName = reader.nextLine();
                 ClientLogicLayer search = new ClientLogicLayer();
-                System.out.println("List of titles related to your search: " + search.search(fileName2, "ti"));
+                System.out.println("List of titles related to your search: " + search.search(fileName, "ti"));
                 break;
             case 4: // Search Topic case
                 reader = new Scanner(System.in);
                 System.out.println("What file do you want to search by topic?");
-                fileName2 = reader.nextLine();
+                fileName = reader.nextLine();
                 search = new ClientLogicLayer();
-                System.out.println("List of titles related to your search: " + search.search(fileName2, "to"));
+                System.out.println("List of titles related to your search: " + search.search(fileName, "to"));
                 break;
             case 5: // Subscription to topic case
                 System.out.println("Subscribe: " + n);

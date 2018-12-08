@@ -9,7 +9,7 @@ public class ServerStorage {
 
     private String path = "C:/Users/Public/";
     public static ArrayList<String> listToReturn;
-
+    public static ArrayList<String> fileToReturn;
 
     ServerStorage(){}
 
@@ -41,12 +41,37 @@ public class ServerStorage {
         descriptions.close();
     }
 
-    void downloadFile(byte[] buffer) throws IOException {
-        String userName = System.getProperty("user.name");
-        String downloadPath = "C:/Users/Public/";
-        FileOutputStream f = new FileOutputStream(downloadPath);
-        f.write(buffer);
+    String downloadFile(String fileTitle) throws IOException {
+        listToReturn = new ArrayList<>();
+        File[] files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
+        FindFileByTitle(files, fileTitle);
+        fileToReturn.add(path);
+        return fileToReturn.get(0);
     }
+
+    File FindFileByTitle (File[] files, String fileTitle) throws IOException  {
+        fileToReturn = new ArrayList<>();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                FindFileByTitle(file.listFiles(), fileTitle); // Calls same method again.
+            }else {
+                fileToReturn.add(String.valueOf(file));
+                if ((file.getName().contains("description.txt"))){
+                    String st;
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+                    while (( st = br.readLine()) != null){
+                        String[] toCompare = st.split("title: ");
+                        if(toCompare[1].equals(fileTitle)){
+                            listToReturn.add(String.valueOf(file));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
     ArrayList<String> showMedia(String filename, String type) throws IOException {
         listToReturn = new ArrayList<>();
