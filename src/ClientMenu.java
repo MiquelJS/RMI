@@ -1,13 +1,12 @@
-import com.sun.deploy.util.StringUtils;
-import javafx.stage.FileChooser;
+import com.sun.security.ntlm.Client;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientMenu {
@@ -25,18 +24,15 @@ public class ClientMenu {
     private static String username;
     private static String password;
     private static ClientLogicLayer clientLogicLayer = new ClientLogicLayer();
+    private static Scanner reader = new Scanner(System.in);
 
     public static void main(String[] argv) throws IOException, NotBoundException {
         welcomeClient();
     }
 
     private static void welcomeClient() throws IOException, NotBoundException {
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n0.Exit");
-        String n = reader.nextLine(); // Scans the next token of the input as an int.
-        int userNumber = 0; // The user return number
-        if (isNumeric(n)) { userNumber = Integer.parseInt(n);}
-        else { System.exit(0);}
+        int userNumber = checkIfNumber(reader.nextLine());
         clientSign(userNumber);
         int clientOption = clientMainMenu();
         /*
@@ -82,18 +78,11 @@ public class ClientMenu {
     }
 
     private static int clientMainMenu() throws IOException, NotBoundException {
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
-                "1.Upload multimedia    2.Download multimedia\n" +
-                "3.Search               4.Subscribe\n" +
-                "0.Logout");
-        String n = reader.nextLine(); // Scans the next token of the input as an int.
-        int userNumber = 0; // The user return number
-        if (isNumeric(n)) {
-            userNumber = Integer.parseInt(n);
-        } else {
-            System.exit(0);
-        }
+                "1.Upload multimedia        2.Download multimedia\n" +
+                "3.Search                   4.Subscribe\n" +
+                "5.Edit/Delete multimedia   0.Logout");
+        int userNumber = checkIfNumber(reader.nextLine()); // Just an error checker function
         switch (userNumber) {
             case 0:
                 System.out.println("Logging out...\n");
@@ -101,21 +90,21 @@ public class ClientMenu {
             case 1: // Upload case
                 // fileDescriptions have: [file,title,topic]
                 String[] fileDescriptions = uploadFileWithBrowser();
-                ClientLogicLayer upload = new ClientLogicLayer();
-                upload.upload(username,fileDescriptions);
+                clientLogicLayer.upload(username,fileDescriptions);
                 break;
             case 2: // Download case
-                reader = new Scanner(System.in);
                 System.out.println("What file do you want to download?\n");
                 String fileName = reader.nextLine();
-                ClientLogicLayer download = new ClientLogicLayer();
-                download.download(username,fileName);
+                clientLogicLayer.download(username,fileName);
                 break;
             case 3: // Search case
-                System.out.println("Search: " + n);
+                System.out.println("Search");
                 break;
             case 4: // Subscription to topic case
-                System.out.println("Subscribe: " + n);
+                System.out.println("Subscribe");
+                break;
+            case 5: // Edit/Delete case
+                editDeleteCase();
                 break;
             default:
                 System.out.println("Enter one of the options listed above.\n");
@@ -123,6 +112,59 @@ public class ClientMenu {
         // Close the Scanner once finished
         reader.close();
         return userNumber;
+    }
+
+    private static void editDeleteCase() throws IOException, NotBoundException {
+        ArrayList<String> userMultimedia = clientLogicLayer.getUserTitles(username);
+        if (userMultimedia == null) {
+            System.out.println("This user has no uploaded media\n");
+            System.exit(0);
+        }
+        String showUserOptions = "What file do you want to edit/delete?\n";
+        for(int i = 0; i < userMultimedia.size(); i++) {
+            showUserOptions = showUserOptions + (i + 1) + "." + userMultimedia.get(i) + "\t\t";
+            if((i + 1) % 3 == 0) { // prints in a new line every 3 multimedia files
+                showUserOptions = showUserOptions + "\n";
+            }
+        }
+        System.out.println(showUserOptions + "0.Exit\n");  // Displays all possible options
+        int chosenOption = checkIfNumber(reader.nextLine());
+        if (chosenOption < 1 || chosenOption > userMultimedia.size()) {
+            System.exit(0);
+        } else {
+            editDeleteFile(chosenOption - 1,userMultimedia.get(chosenOption - 1));
+        }
+    }
+
+    private static void editDeleteFile(int filePosition, String title) throws IOException, NotBoundException {
+        System.out.println( "Do you want to:\n" +
+                            "1.Edit        2.Delete\n" +
+                            "0.Exit");
+        int editDelete = checkIfNumber(reader.nextLine());
+        switch (editDelete) {
+            case 1: // Edit file
+                System.out.println("What new title would you like this file to have? \n");
+                clientLogicLayer.changeTitle(username, filePosition, title, reader.nextLine());
+                break;
+            case 2: // Delete file
+                System.out.println("Are you sure you want to delete the file with title " + title + "? [y/n]");
+                if (reader.nextLine().equals("y")) {
+                    clientLogicLayer.deleteFile(username, filePosition, title);
+                } else {
+                    System.exit(0);
+                }
+                break;
+            default:
+                System.exit(0);
+        }
+    }
+
+    // This function is only an error checker for the user's possible outputs
+    private static int checkIfNumber(String n) {
+        int number = 0;
+        if (isNumeric(n)) { number = Integer.parseInt(n);}
+        else { System.exit(0);}
+        return number;
     }
 
     private static boolean isNumeric(String str) {
@@ -138,23 +180,19 @@ public class ClientMenu {
         //Parent is an instance of a Component such as JFrame, JDialog or JPanel which is parent of the dialog
         int returnVal = fc.showOpenDialog(fc);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            Scanner reader;
             System.out.println("You selected the file: " + fc.getSelectedFile().getName() + "\n");
             fileDescriptions[0] = fc.getSelectedFile().getAbsolutePath();
 
             if(clientLogicLayer.checkFile(username, fc.getSelectedFile().getName())) {
-                reader = new Scanner(System.in);
                 System.out.println("This file already exist, do you want to continue? [y/n]\n");
                 if(!reader.nextLine().equals("y")) {
                     System.exit(0);
                 }
             }
 
-            reader = new Scanner(System.in);
             System.out.println("What title does your file have?\n");
             fileDescriptions[1] = reader.nextLine();
 
-            reader = new Scanner(System.in);
             System.out.println("And what topic?\n");
             fileDescriptions[2] = reader.nextLine();
             return fileDescriptions;
@@ -165,10 +203,8 @@ public class ClientMenu {
     }
 
     private static void readUserAndPass() {
-        Scanner reader = new Scanner(System.in);
         System.out.println("user: ");
         username = reader.nextLine();
-        reader = new Scanner(System.in);
         System.out.println("password: ");
         password = reader.nextLine();
     }

@@ -3,6 +3,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ClientLogicLayer {
 
@@ -57,5 +58,29 @@ public class ClientLogicLayer {
     public boolean checkFile(String username, String fileName) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         return fi.checkFile(username, fileName);
+    }
+
+    public ArrayList<String> getUserTitles(String username) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        return fi.showSearch(username,"","ti");
+    }
+
+    public void changeTitle(String username, int filePosition, String oldTitle, String newTitle) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        if(fi.changeTitle(username, filePosition, newTitle)) {
+            System.out.println("Changed title from " + oldTitle + " to " + newTitle + ".\n");
+        } else {
+            System.out.println("Some error has occurred.\n");
+        }
+    }
+
+    public void deleteFile(String username,int filePosition, String oldTitle) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        if (fi.deleteFile(username, filePosition)) {
+            System.out.println("File with title " + oldTitle + " deleted successfully!\n");
+        } else {
+            System.out.println("Some error has occurred.\n");
+        }
+
     }
 }

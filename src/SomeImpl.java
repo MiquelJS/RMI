@@ -1,6 +1,7 @@
 import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
 
@@ -38,13 +39,11 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
     }
 
     public void addCredentials(String username, String password) throws IOException {
-        ServerStorage credentials = new ServerStorage();
-        credentials.addCredentials(username,password);
+        new ServerStorage().addCredentials(username,password);
     }
 
     public boolean checkUser(String username) {
-        ServerStorage credentials = new ServerStorage();
-        return credentials.checkUser(username);
+        return new ServerStorage().checkUser(username);
     }
 
     public boolean checkFile(String username, String fileName) {
@@ -52,8 +51,19 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
     }
 
     public boolean checkCredentials(String username, String password) {
-        ServerStorage credentials = new ServerStorage();
-        return credentials.checkCredentials(username,password);
+        return new ServerStorage().checkCredentials(username,password);
+    }
+
+    public ArrayList<String> showSearch(String username, String fileName, String type) throws IOException {
+        return new ServerStorage().showMedia(username, fileName, type);
+    }
+
+    public boolean changeTitle(String username, int filePosition, String newTitle) throws IOException {
+        return new ServerStorage().changeTitle(username, filePosition, newTitle);
+    }
+
+    public boolean deleteFile(String username, int filePosition) throws IOException {
+        return new ServerStorage().deleteFile(username, filePosition);
     }
 }
 
