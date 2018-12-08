@@ -7,7 +7,6 @@ import java.util.List;
 public class ServerStorage {
 
     private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_GREEN = "\u001B[32m";
 
     private String path = "C:/Users/Public/";
@@ -42,6 +41,7 @@ public class ServerStorage {
         descriptions.newLine();
         descriptions.write("topic: " + topic);
         descriptions.close();
+        f.close();
     }
 
     void downloadFile(String username, String fileName) {
@@ -67,6 +67,7 @@ public class ServerStorage {
             String line;
             while ((line = br.readLine()) != null) {
                 if(line.equals(username + "_" + password)) {
+                    br.close();
                     return true;
                 }
             }
@@ -84,6 +85,7 @@ public class ServerStorage {
                 String[] parts = line.split("_");
                 String part1 = parts[0];
                 if(part1.equals(username)) {
+                    br.close();
                     return true;
                 }
             }
@@ -148,6 +150,7 @@ public class ServerStorage {
                             listToReturn.add(toReturn[1]);
                             break;
                         }
+                        br.close();
                     }
                 }
             }
@@ -170,6 +173,7 @@ public class ServerStorage {
                             listToReturn.add(ar.get(1));
                         }
                     }
+                    br.close();
                 }
             }
         }
@@ -183,8 +187,7 @@ public class ServerStorage {
     boolean deleteFile(String username, int filePosition) {
         File file = getFileFromPosition(username,filePosition);
         if (file.isDirectory()) {
-            for (File c : file.listFiles())  {
-                System.out.println(c);
+            for (File c : file.listFiles()) {
                 c.delete();
             }
         }
@@ -225,11 +228,11 @@ public class ServerStorage {
                 bw.newLine();
                 bw.write(lines.get(1)); // Writes the topic
                 bw.flush();
+                fw.close();
                 bw.close();
-            } else {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

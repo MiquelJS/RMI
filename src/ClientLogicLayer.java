@@ -79,7 +79,7 @@ public class ClientLogicLayer {
         if (fi.deleteFile(username, filePosition)) {
             System.out.println("File with title " + oldTitle + " deleted successfully!\n");
         } else {
-            System.out.println("Some error has occurred.\n");
+            System.out.println("Cannot delete file or file does not exist.\n");
         }
 
     }

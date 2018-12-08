@@ -13,14 +13,7 @@ public class ClientMenu {
 
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
-    /*
     private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
-    private static final String ANSI_BLUE = "\u001B[34m";
-    private static final String ANSI_PURPLE = "\u001B[35m";
-    private static final String ANSI_CYAN = "\u001B[36m";
-    private static final String ANSI_WHITE = "\u001B[37m";
-    */
     private static String username;
     private static String password;
     private static ClientLogicLayer clientLogicLayer = new ClientLogicLayer();
@@ -34,12 +27,7 @@ public class ClientMenu {
         System.out.println("Welcome to the RMI Client:\n1.Sign in\t2.Sign up\n0.Exit");
         int userNumber = checkIfNumber(reader.nextLine());
         clientSign(userNumber);
-        int clientOption = clientMainMenu();
-        /*
-        while(clientOption != 0) {
-            clientOption = clientMainMenu();
-        }
-        */
+        clientMainMenu();
     }
 
     private static void clientSign(int sign) throws IOException, NotBoundException {
@@ -73,11 +61,12 @@ public class ClientMenu {
                 break;
             default:// Exit
             System.out.println("Exiting...\n");
+            reader.close(); // Close the Scanner once finished
             System.exit(0);
         }
     }
 
-    private static int clientMainMenu() throws IOException, NotBoundException {
+    private static void clientMainMenu() throws IOException, NotBoundException {
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
                 "1.Upload multimedia        2.Download multimedia\n" +
                 "3.Search                   4.Subscribe\n" +
@@ -86,6 +75,7 @@ public class ClientMenu {
         switch (userNumber) {
             case 0:
                 System.out.println("Logging out...\n");
+                welcomeClient();
                 break;
             case 1: // Upload case
                 // fileDescriptions have: [file,title,topic]
@@ -109,16 +99,14 @@ public class ClientMenu {
             default:
                 System.out.println("Enter one of the options listed above.\n");
         }
-        // Close the Scanner once finished
-        reader.close();
-        return userNumber;
+        clientMainMenu();
     }
 
     private static void editDeleteCase() throws IOException, NotBoundException {
         ArrayList<String> userMultimedia = clientLogicLayer.getUserTitles(username);
         if (userMultimedia == null) {
             System.out.println("This user has no uploaded media\n");
-            System.exit(0);
+            clientMainMenu();
         }
         String showUserOptions = "What file do you want to edit/delete?\n";
         for(int i = 0; i < userMultimedia.size(); i++) {
@@ -130,7 +118,7 @@ public class ClientMenu {
         System.out.println(showUserOptions + "0.Exit\n");  // Displays all possible options
         int chosenOption = checkIfNumber(reader.nextLine());
         if (chosenOption < 1 || chosenOption > userMultimedia.size()) {
-            System.exit(0);
+            clientMainMenu();
         } else {
             editDeleteFile(chosenOption - 1,userMultimedia.get(chosenOption - 1));
         }
@@ -151,11 +139,11 @@ public class ClientMenu {
                 if (reader.nextLine().equals("y")) {
                     clientLogicLayer.deleteFile(username, filePosition, title);
                 } else {
-                    System.exit(0);
+                    clientMainMenu();
                 }
                 break;
             default:
-                System.exit(0);
+                clientMainMenu();
         }
     }
 
@@ -186,7 +174,7 @@ public class ClientMenu {
             if(clientLogicLayer.checkFile(username, fc.getSelectedFile().getName())) {
                 System.out.println("This file already exist, do you want to continue? [y/n]\n");
                 if(!reader.nextLine().equals("y")) {
-                    System.exit(0);
+                    clientMainMenu();
                 }
             }
 

@@ -62,7 +62,7 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         return new ServerStorage().changeTitle(username, filePosition, newTitle);
     }
 
-    public boolean deleteFile(String username, int filePosition) throws IOException {
+    public boolean deleteFile(String username, int filePosition) {
         return new ServerStorage().deleteFile(username, filePosition);
     }
 }
