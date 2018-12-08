@@ -78,7 +78,7 @@ public class ServerStorage {
     }
 
     boolean checkUser(String username) {
-        String newPath = createDir(path,"Server Storage");
+        String newPath = createDir(path,"Server Storage/");
         try (BufferedReader br = new BufferedReader(new FileReader(newPath + "ClientCredentials.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -90,7 +90,7 @@ public class ServerStorage {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         }
         return false;
     }
