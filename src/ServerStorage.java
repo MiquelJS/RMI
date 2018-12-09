@@ -58,12 +58,6 @@ public class ServerStorage {
         File pathToDownload = new File("C:/Users/Public/"+ "/" + fileTitle + "." + type[type.length - 1]);
         toReturn.add(pathToDownload );
         toReturn.add(fileToReturn.get(0));
-
-        System.out.println(fileToReturn.get(0));
-        System.out.println(fileToReturn);
-
-        System.out.println(listToReturn.get(0));
-
         return toReturn;
     }
 
