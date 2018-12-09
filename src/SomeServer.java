@@ -15,7 +15,7 @@ public class SomeServer {
             SomeImpl exportedObj = new SomeImpl();
             startRegistry(RMIPortNum);
             // register the object under the name “some”
-            String registryURL = "rmi://192.168.1.35:" + portNum + "/some";
+            String registryURL = "rmi://localhost:" + portNum + "/some";
             Naming.rebind(registryURL, exportedObj);
             System.out.println("Server ready.");
 
@@ -35,7 +35,6 @@ public class SomeServer {
         }
         catch (RemoteException ex) {
             // No valid registry at that port.
-            System.out.println("RMI registry cannot be located at port " + RMIPortNum);
             Registry registry = LocateRegistry.createRegistry(RMIPortNum);
             System.out.println("RMI registry created at port " + RMIPortNum);
         }

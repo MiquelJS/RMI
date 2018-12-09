@@ -88,7 +88,7 @@ public class ClientMenu {
                 clientLogicLayer.download(fileName);
                 break;
             case 3: // Search case
-                System.out.println("What file do you want to search?\n");
+                System.out.println("What file (by title) do you want to search?\n");
                 String fileSearch = reader.nextLine();
                 System.out.println("The Titles found with the file search are:");
                 System.out.println(clientLogicLayer.search("",fileSearch, "ti"));
