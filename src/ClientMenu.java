@@ -69,7 +69,7 @@ public class ClientMenu {
     private static void clientMainMenu() throws IOException, NotBoundException {
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
                 "1.Upload multimedia        2.Download multimedia\n" +
-                "3.Search                   4.Subscribe\n" +
+                "3.Search  by file          4.Search by topic\n" +
                 "5.Edit/Delete multimedia   0.Logout");
         int userNumber = checkIfNumber(reader.nextLine()); // Just an error checker function
         switch (userNumber) {
@@ -88,10 +88,12 @@ public class ClientMenu {
                 clientLogicLayer.download(fileName);
                 break;
             case 3: // Search case
-                System.out.println("Search");
+                String fileSearch = reader.nextLine();
+                clientLogicLayer.search(username,fileSearch, "ti");
                 break;
             case 4: // Subscription to topic case
-                System.out.println("Subscribe");
+                fileSearch = reader.nextLine();
+                clientLogicLayer.search(username, fileSearch, "to");
                 break;
             case 5: // Edit/Delete case
                 editDeleteCase();

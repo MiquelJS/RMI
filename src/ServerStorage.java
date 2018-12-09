@@ -12,7 +12,6 @@ public class ServerStorage {
 
     private String path = "C:/Users/Public/";
     private static ArrayList<String> listToReturn;
-    public static ArrayList<String> listToReturn;
     public static ArrayList<String> fileToReturn;
 
     ServerStorage(){}
@@ -59,13 +58,19 @@ public class ServerStorage {
         File pathToDownload = new File("C:/Users/Public/"+ "/" + fileTitle + "." + type[type.length - 1]);
         toReturn.add(pathToDownload );
         toReturn.add(fileToReturn.get(0));
+
+        System.out.println(fileToReturn.get(0));
+        System.out.println(fileToReturn);
+
+        System.out.println(listToReturn.get(0));
+
         return toReturn;
     }
 
     File FindFileByTitle (File[] files, String fileTitle) throws IOException  {
         fileToReturn = new ArrayList<>();
         for (File file : files) {
-            if (file.isDirectory()) {
+            if (file.isDirectory() && listToReturn.size() < 1) {
                 FindFileByTitle(file.listFiles(), fileTitle); // Calls same method again.
             }else {
                 fileToReturn.add(String.valueOf(file));
@@ -83,9 +88,6 @@ public class ServerStorage {
             }
         }
         return null;
-    }
-
-
     }
 
     void addCredentials(String username, String password) throws IOException {

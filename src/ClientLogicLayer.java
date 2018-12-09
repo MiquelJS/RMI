@@ -45,9 +45,9 @@ public class ClientLogicLayer {
         }
     }
 
-    public ArrayList<String> search(String fileName, String type) throws IOException, NotBoundException {
+    public ArrayList<String> search(String username, String fileName, String type) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
-        return fi.showSearch(fileName, type);
+        return fi.showSearch(username, fileName, type);
     }
 
     public boolean checkCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {
