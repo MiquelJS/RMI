@@ -10,11 +10,11 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
     }
     public void uploadFile(String username,String[] fileDescriptions, byte[] buffer){
         try {
-            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileDescriptions[0]));
-            output.write(buffer,0,buffer.length);
+            //BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(fileDescriptions[0]));
+            //output.write(buffer,0,buffer.length);
             new ServerStorage().saveFile(username,buffer,fileDescriptions);
-            output.flush();
-            output.close();
+            //output.flush();
+            //output.close();
         } catch(Exception e) {
             System.out.println("FileImpl: " + e.getMessage());
             e.printStackTrace();

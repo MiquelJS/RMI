@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ClientLogicLayer {
 
     private int portNum = 1099;
-    private String registryURL = "rmi://localhost:" + portNum + "/some";
+    private String registryURL = "rmi://192.168.1.37:" + portNum + "/some";
 
     ClientLogicLayer() {}
 

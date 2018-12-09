@@ -68,15 +68,15 @@ public class ServerStorage {
                 FindFileByTitle(file.listFiles(), fileTitle); // Calls same method again.
             }else {
                 fileToReturn.add(String.valueOf(file));
-                if ((file.getName().contains("description.txt")) && listToReturn.size() < 1){
+                if ((file.getName().contains("description.txt"))){
                     String st;
                     BufferedReader br = new BufferedReader(new FileReader(file));
                     while (( st = br.readLine()) != null){
                         String[] toCompare = st.split("title: ");
                         if(String.valueOf(toCompare[1]).equals(fileTitle)){
                             listToReturn.add(String.valueOf(file));
-                            break;
-                        }
+                            return null;
+                        }else{break;}
                     }
                 }
             }
@@ -184,7 +184,6 @@ public class ServerStorage {
                         while (( st = br.readLine()) != null){
                             String[] toReturn = st.split("title: ");
                             listToReturn.add(toReturn[1]);
-                            System.out.println(listToReturn);
                             break;
                         }
                         br.close();

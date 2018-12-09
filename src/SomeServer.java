@@ -15,7 +15,7 @@ public class SomeServer {
             SomeImpl exportedObj = new SomeImpl();
             startRegistry(RMIPortNum);
             // register the object under the name “some”
-            String registryURL = "rmi://localhost:" + portNum + "/some";
+            String registryURL = "rmi://192.168.1.35:" + portNum + "/some";
             Naming.rebind(registryURL, exportedObj);
             System.out.println("Server ready.");
 
