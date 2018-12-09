@@ -88,12 +88,16 @@ public class ClientMenu {
                 clientLogicLayer.download(fileName);
                 break;
             case 3: // Search case
+                System.out.println("What file do you want to search?\n");
                 String fileSearch = reader.nextLine();
-                clientLogicLayer.search(username,fileSearch, "ti");
+                System.out.println("The Titles found with the file search are:");
+                System.out.println(clientLogicLayer.search(username,fileSearch, "ti"));
                 break;
             case 4: // Subscription to topic case
+                System.out.println("What topic do you want to search?\n");
                 fileSearch = reader.nextLine();
-                clientLogicLayer.search(username, fileSearch, "to");
+                System.out.println("The Titles found with the topic search are:");
+                System.out.println(clientLogicLayer.search(username,fileSearch, "to"));
                 break;
             case 5: // Edit/Delete case
                 editDeleteCase();

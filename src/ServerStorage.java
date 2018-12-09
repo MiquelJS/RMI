@@ -184,6 +184,7 @@ public class ServerStorage {
                         while (( st = br.readLine()) != null){
                             String[] toReturn = st.split("title: ");
                             listToReturn.add(toReturn[1]);
+                            System.out.println(listToReturn);
                             break;
                         }
                         br.close();
