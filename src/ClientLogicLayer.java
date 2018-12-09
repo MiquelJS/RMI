@@ -13,12 +13,13 @@ public class ClientLogicLayer {
     ClientLogicLayer() {}
 
     public void upload(String username,String[] fileDescriptions) throws IOException, NotBoundException {
-        String fileName = fileDescriptions[0];
-        File file = new File(fileName);
+        String filePath = fileDescriptions[0];
+        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
+        File file = new File(filePath);
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         byte buffer[] = new byte[(int)file.length()];
         try {
-            BufferedInputStream input = new BufferedInputStream(new FileInputStream(fileName));
+            BufferedInputStream input = new BufferedInputStream(new FileInputStream(filePath));
             input.read(buffer, 0, buffer.length);
             input.close();
             fi.uploadFile(username, fileDescriptions, buffer);
@@ -63,5 +64,34 @@ public class ClientLogicLayer {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         fi.addCredentials(username,password);
         System.out.println("User " + username + " created successfully!\n");
+    }
+
+    public boolean checkFile(String username, String fileName) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        return fi.checkFile(username, fileName);
+    }
+
+    public ArrayList<String> getUserTitles(String username) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        return fi.showSearch(username,"","ti");
+    }
+
+    public void changeTitle(String username, int filePosition, String oldTitle, String newTitle) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        if(fi.changeTitle(username, filePosition, newTitle)) {
+            System.out.println("Changed title from " + oldTitle + " to " + newTitle + ".\n");
+        } else {
+            System.out.println("Some error has occurred.\n");
+        }
+    }
+
+    public void deleteFile(String username,int filePosition, String oldTitle) throws IOException, NotBoundException {
+        SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
+        if (fi.deleteFile(username, filePosition)) {
+            System.out.println("File with title " + oldTitle + " deleted successfully!\n");
+        } else {
+            System.out.println("Cannot delete file or file does not exist.\n");
+        }
+
     }
 }
