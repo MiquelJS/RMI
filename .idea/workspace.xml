@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="37c83e9c-a6c2-422e-902a-a46c16b912a6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RMI/ClientMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RMI/ServerStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RMI/ServerStorage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RMI/ServerStorage.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ServerStorage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerStorage.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,29 +13,22 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="334998466">
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="java" value="214" />
-          <entry key="txt" value="61" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="214" />
-          <entry key="PLAIN_TEXT" value="61" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/SomeServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ClientMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="91" column="54" lean-forward="true" selection-start-line="91" selection-start-column="54" selection-end-line="91" selection-end-column="54" />
+            <state relative-caret-position="234">
+              <caret line="182" column="34" selection-start-line="182" selection-start-column="34" selection-end-line="182" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -48,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ClientLogicLayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="49" column="26" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="26" />
+            <state relative-caret-position="142">
+              <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -57,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SomeInterface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="20" lean-forward="true" selection-start-column="20" selection-end-column="20" />
+            <state relative-caret-position="272">
+              <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -66,17 +57,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SomeImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="56" column="36" selection-start-line="56" selection-start-column="36" selection-end-line="56" selection-end-column="36" />
+            <state relative-caret-position="522">
+              <caret line="57" column="41" lean-forward="true" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ServerStorage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="167" selection-start-line="167" selection-end-line="167" />
+            <state relative-caret-position="-36">
+              <caret line="158" column="22" selection-start-line="158" selection-start-column="22" selection-end-line="158" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -103,7 +100,9 @@
       <find>indexof</find>
       <find>fileOption</find>
       <find>close</find>
-      <find>showsear</find>
+      <find>exit</find>
+      <find>exit(0)</find>
+      <find>checkifnu</find>
     </findStrings>
     <replaceStrings>
       <replace>fileOrFolderExists</replace>
@@ -114,6 +113,11 @@
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="EduardDeveloper" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -124,8 +128,8 @@
         <option value="$PROJECT_DIR$/src/SomeInterface.java" />
         <option value="$PROJECT_DIR$/src/ClientLogicLayer.java" />
         <option value="$PROJECT_DIR$/src/SomeImpl.java" />
-        <option value="$PROJECT_DIR$/src/ClientMenu.java" />
         <option value="$PROJECT_DIR$/src/ServerStorage.java" />
+        <option value="$PROJECT_DIR$/src/ClientMenu.java" />
       </list>
     </option>
   </component>
@@ -147,6 +151,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -154,17 +159,11 @@
               <item name="RMI" type="b2602c69:ProjectViewProjectNode" />
               <item name="RMI" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="RMI" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RMI" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,25 +239,11 @@
       <option name="project" value="LOCAL" />
       <updated>1544344590114</updated>
     </task>
-    <task id="LOCAL-00002" summary="Merge + arreglat problema amb download">
-      <created>1544345634095</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1544345634095</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Merge + arreglat problema amb downloa + Eliminat prints">
-      <created>1544345722563</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1544345722563</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2441000" />
+    <option name="totallyTimeSpent" value="1546000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -270,10 +255,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14552239" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1624161" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -282,7 +267,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49840087" visible="true" weight="0.3177874" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49840087" visible="true" weight="0.32719547" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -335,9 +320,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Merge branch 'Miquel-Developer' into EduardDeveloper&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/RMI/ClientLogicLayer.class&#10;#&#9;out/production/RMI/ClientMenu.class&#10;#&#9;out/production/RMI/ServerStorage.class&#10;#&#9;out/production/RMI/SomeImpl.class&#10;#&#9;out/production/RMI/SomeInterface.class&#10;#&#9;src/ClientMenu.java&#10;#&#9;src/ServerStorage.java&#10;#&#9;src/SomeImpl.java&#10;#&#9;src/SomeInterface.java" />
-    <MESSAGE value="Merge + arreglat problema amb download" />
-    <MESSAGE value="Merge + arreglat problema amb downloa + Eliminat prints" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge + arreglat problema amb downloa + Eliminat prints" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'Miquel-Developer' into EduardDeveloper&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/RMI/ClientLogicLayer.class&#10;#&#9;out/production/RMI/ClientMenu.class&#10;#&#9;out/production/RMI/ServerStorage.class&#10;#&#9;out/production/RMI/SomeImpl.class&#10;#&#9;out/production/RMI/SomeInterface.class&#10;#&#9;src/ClientMenu.java&#10;#&#9;src/ServerStorage.java&#10;#&#9;src/SomeImpl.java&#10;#&#9;src/SomeInterface.java" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Server Storage/-1085747293" />
@@ -365,31 +348,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SomeImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="56" column="36" selection-start-line="56" selection-start-column="36" selection-end-line="56" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/SomeInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="20" lean-forward="true" selection-start-column="20" selection-end-column="20" />
+        <state relative-caret-position="272">
+          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClientLogicLayer.java">
+    <entry file="file://$PROJECT_DIR$/src/SomeImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="49" column="26" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClientMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="91" column="54" lean-forward="true" selection-start-line="91" selection-start-column="54" selection-end-line="91" selection-end-column="54" />
+        <state relative-caret-position="522">
+          <caret line="57" column="41" lean-forward="true" selection-start-line="57" selection-start-column="41" selection-end-line="57" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -398,8 +367,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ServerStorage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="167" selection-start-line="167" selection-end-line="167" />
+        <state relative-caret-position="-36">
+          <caret line="158" column="22" selection-start-line="158" selection-start-column="22" selection-end-line="158" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientLogicLayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="182" column="34" selection-start-line="182" selection-start-column="34" selection-end-line="182" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
