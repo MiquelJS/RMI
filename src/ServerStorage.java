@@ -1,9 +1,10 @@
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 
 public class ServerStorage {
 
@@ -14,7 +15,9 @@ public class ServerStorage {
     private static ArrayList<String> listToReturn;
     public static ArrayList<String> fileToReturn;
 
-    ServerStorage(){}
+    WSConnectionManager wsConn = new WSConnectionManager(InetAddress.getLocalHost().getHostAddress());
+
+    ServerStorage() throws UnknownHostException {}
 
     void saveFile(String username, byte[] buffer, String[] fileDescriptions) throws IOException {
         String filePath = fileDescriptions[0];
@@ -44,6 +47,9 @@ public class ServerStorage {
         descriptions.write("topic: " + topic);
         descriptions.close();
         f.close();
+
+        // Notify the WebService that a file has been added to the RMI server
+        wsConn.postFile(username, fileName, title, topic);
     }
 
     ArrayList<Object> downloadFile(String fileTitle) throws IOException {
@@ -95,8 +101,10 @@ public class ServerStorage {
         writer.write(credentials);
         writer.newLine();
         writer.close();
-    }
 
+        // Notify the WebService that a user has been added
+        wsConn.postUserCredentials(username, password);
+    }
 
     boolean checkCredentials(String username, String password) {
         try (BufferedReader br = new BufferedReader(new FileReader(path + "Server Storage/ClientCredentials.txt"))) {
