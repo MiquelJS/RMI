@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -50,7 +51,7 @@ public class ClientLogicLayer {
         return fi.showSearch(username, fileName, type);
     }
 
-    public boolean checkCredentials(String username, String password) throws RemoteException, NotBoundException, MalformedURLException {
+    public boolean checkCredentials(String username, String password) throws IOException, NotBoundException {
         SomeInterface fi = (SomeInterface) Naming.lookup(registryURL);
         return fi.checkCredentials(username,password);
     }

@@ -1,16 +1,16 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class WSConnectionManager {
 
     private String serverAddress;
-    private String ngrokWSAddress = "http://9c806146.ngrok.io/mytubeWeb/rest/";
+    private String ngrokWSAddress = "http://88bf2891.ngrok.io/mytubeWeb/rest/";
 
     public WSConnectionManager(String serverAddress) {
         this.serverAddress = serverAddress;
@@ -18,8 +18,7 @@ public class WSConnectionManager {
 
     public void postUserCredentials(String username, String password) {
         try {
-            String test_URL = ngrokWSAddress + "users/";
-            URL url = new URL(test_URL);
+            URL url = new URL(ngrokWSAddress + "users");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json"); //application/json
@@ -29,6 +28,7 @@ public class WSConnectionManager {
             OutputStream os = conn.getOutputStream();
             os.write(postToWS.getBytes());
             os.flush();
+
             if(conn.getResponseCode() != 200){
                 throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
             }
@@ -44,27 +44,24 @@ public class WSConnectionManager {
         }
     }
 
-    private String createJSon(List<String> params) {
+    private String createJSon(List<Object> params) {
         String json = "{";
         for (int i = 0; i < params.size(); i++) {
-            if (params.get(i).getClass().getName().equals("String")) {
-                json.concat("\"" + params.get(i) + "\"");
-            } else {
-                json.concat(params.get(i));
-            }
+            json += "\"" + params.get(i) + "\"";
             if (i % 2 == 0) {
-                json.concat(",");
+                json += ":";
             } else {
-                json.concat(":");
+                json += ",";
             }
         }
-        return json.substring(json.length() - 2).concat("}");
+        json = json.substring(0, json.length() - 1).concat("}");
+        System.out.println(json);
+        return json;
     }
 
     public void postFile(String username, String fileName, String title, String topic) {
         try {
-            String test_URL = ngrokWSAddress + "users/";
-            URL url = new URL(test_URL);
+            URL url = new URL(ngrokWSAddress + "file/" + fileName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json"); //application/json
@@ -90,4 +87,54 @@ public class WSConnectionManager {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<String> getUsers(String username) {
+        ArrayList<String> users = new ArrayList<>();
+        try {
+            URL url = new URL(ngrokWSAddress + "users/" + username);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json"); //application/json
+            if(conn.getResponseCode() < 200 || conn.getResponseCode() > 200){
+                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
+            }
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            BufferedReader br = new BufferedReader(in);
+            String output;
+            while ((output = br.readLine()) != null){
+                users.add(output);
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("\nUsers:" + Arrays.toString(users.toArray()) + "\n");
+        return users;
+    }
+
+    public ArrayList<String> getFiles(String username, String filename, String type) {
+        // type = "ti" -> search by title
+            // -> username = "" -> search all files
+            // -> username != "" -> search this user's files
+        // type = "to" -> search by topic
+            // -> username = "" -> search all files
+            // -> username != "" -> search this user's files
+        ArrayList<String> filesNames = new ArrayList<>();
+        if (type.equals("ti"))
+            filesNames = searchFilesByTitle(username);
+        else
+            filesNames = searchFilesByTopic(username);
+        return filesNames;
+    }
+
+    private ArrayList<String> searchFilesByTitle(String username) {
+
+        return null;
+    }
+
+    private ArrayList<String> searchFilesByTopic(String username) {
+
+        return null;
+    }
+
 }

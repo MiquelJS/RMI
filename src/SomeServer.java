@@ -22,8 +22,6 @@ public class SomeServer {
             String registryURL = "rmi://localhost:" + portNum + "/some";
             Naming.rebind(registryURL, exportedObj);
             System.out.println("Server ready.\n");
-            System.out.println("Trying to connect to Web Service...\n");
-            test();
 
         }// end try
         catch (RemoteException | MalformedURLException e) {
@@ -43,29 +41,4 @@ public class SomeServer {
             System.out.println("RMI registry created at port " + RMIPortNum);
         }
     } // end startRegistry
-
-
-    // -------------------------- Web Service connection ---------------
-    public static void test(){
-        // https://stackoverflow.com/questions/12916169/how-to-consume-rest-in-java
-        try {
-            String test_URL = "http://9c806146.ngrok.io/mytubeWeb/rest/text/";
-            URL url = new URL(test_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "text/plain"); //application/json
-            if(conn.getResponseCode() != 200){
-                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-            }
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-            BufferedReader br = new BufferedReader(in);
-            String output;
-            while ((output = br.readLine()) != null){
-                System.out.println(output);
-            }
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

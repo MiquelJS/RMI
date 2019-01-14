@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public interface SomeInterface extends Remote {
 
     ArrayList<Object> downloadFile(String fileTitle) throws RemoteException;
 
-    boolean checkCredentials(String username, String password) throws RemoteException;
+    boolean checkCredentials(String username, String password) throws RemoteException, UnknownHostException;
 
     void addCredentials(String username, String password) throws IOException;
 

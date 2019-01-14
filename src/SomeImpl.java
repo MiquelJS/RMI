@@ -1,4 +1,6 @@
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -42,15 +44,15 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         new ServerStorage().addCredentials(username,password);
     }
 
-    public boolean checkUser(String username) {
+    public boolean checkUser(String username) throws UnknownHostException, MalformedURLException {
         return new ServerStorage().checkUser(username);
     }
 
-    public boolean checkFile(String username, String fileName) {
+    public boolean checkFile(String username, String fileName) throws UnknownHostException {
         return new ServerStorage().checkFile(username, fileName);
     }
 
-    public boolean checkCredentials(String username, String password) {
+    public boolean checkCredentials(String username, String password) throws UnknownHostException {
         return new ServerStorage().checkCredentials(username,password);
     }
 
@@ -62,7 +64,7 @@ public class SomeImpl extends UnicastRemoteObject implements SomeInterface {
         return new ServerStorage().changeTitle(username, filePosition, newTitle);
     }
 
-    public boolean deleteFile(String username, int filePosition) {
+    public boolean deleteFile(String username, int filePosition) throws UnknownHostException {
         return new ServerStorage().deleteFile(username, filePosition);
     }
 }

@@ -1,5 +1,7 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -121,7 +123,14 @@ public class ServerStorage {
         return false;
     }
 
-    boolean checkUser(String username) {
+    boolean checkUser(String username) throws MalformedURLException {
+        ArrayList<String> users = wsConn.getUsers(username);
+        for (String user : users) {
+            if (user.equals(username))
+                return true;
+        }
+        return false;
+        /*
         String newPath = createDir(path,"Server Storage/");
         try (BufferedReader br = new BufferedReader(new FileReader(newPath + "ClientCredentials.txt"))) {
             String line;
@@ -136,7 +145,7 @@ public class ServerStorage {
         } catch (IOException e) {
             return false;
         }
-        return false;
+        return false; */
     }
 
     // Creates a folder in the path if not already exist
@@ -165,6 +174,7 @@ public class ServerStorage {
     }
 
     ArrayList<String> showMedia(String username, String filename, String type) throws IOException {
+        ArrayList<String> filesNames = wsConn.getFiles(username, filename, type);
         listToReturn = new ArrayList<>();
         File[] files;
         if (username.equals("")) {
