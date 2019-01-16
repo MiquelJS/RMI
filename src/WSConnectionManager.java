@@ -10,7 +10,7 @@ import java.util.List;
 public class WSConnectionManager {
 
     private String serverAddress;
-    private String ngrokWSAddress = "http://59656c41.ngrok.io/mytubeWeb/rest/";
+    private String ngrokWSAddress = "http://b960f13d.ngrok.io/mytubeWeb/rest/";
 
     public WSConnectionManager(String serverAddress) {
         this.serverAddress = serverAddress;
@@ -86,7 +86,7 @@ public class WSConnectionManager {
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.setRequestProperty("Accept", "application/json"); //application/json
-            if(conn.getResponseCode() < 200 || conn.getResponseCode() > 200){
+            if(conn.getResponseCode() < 200 && conn.getResponseCode() > 200){
                 throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
             }
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
