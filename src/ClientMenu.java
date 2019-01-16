@@ -67,7 +67,7 @@ public class ClientMenu {
     private static void clientMainMenu() throws IOException, NotBoundException {
         System.out.println( "Hello " + username + ", what do you want to do?\n" +
                 "1.Upload multimedia        2.Download multimedia\n" +
-                "3.Search by file           4.Search by topic\n" +
+                "3.Search by title          4.Search by topic\n" +
                 "5.Edit/Delete multimedia   0.Logout");
         int userNumber = checkIfNumber(reader.nextLine()); // Just an error checker function
         switch (userNumber) {

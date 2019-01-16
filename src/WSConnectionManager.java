@@ -43,7 +43,7 @@ public class WSConnectionManager {
                                                 "title", title,
                                                 "topic", topic,
                                                 "serverAddress", serverAddress));
-        post("contents/" + fileName, json);
+        post("contents", json);
     }
 
     public ArrayList<String> getAllUsers() {
@@ -54,32 +54,28 @@ public class WSConnectionManager {
         return get("users/all/" + username);
     }
 
-    public ArrayList<String> getFiles(String username, String filename, String type) {
+    public ArrayList<String> getFiles(String username, String search, String type) {
         // type = "ti" -> search by title
             // -> username = "" -> search all files
             // -> username != "" -> search this user's files
         // type = "to" -> search by topic
             // -> username = "" -> search all files
             // -> username != "" -> search this user's files
-        ArrayList<String> filesNames;
-        if (type.equals("ti"))
-            filesNames = searchFilesByTitle(username, filename);
-        else
-            filesNames = searchFilesByTopic(username, filename);
-        return filesNames;
-    }
-
-    private ArrayList<String> searchFilesByTitle(String username, String filename) {
-        if (username.equals("")) {
-            return get("contents/all");
-        } else {
+        if (!username.equals("")) {
             return get("contents/all/" + username);
+        } else {
+            if (type.equals("ti")) {
+                if (search.equals(""))
+                    return get("contents/contains/all");
+                else
+                    return get("contents/contains/title/" + search);
+            } else {
+                if (search.equals(""))
+                    return get("contents/contains/all");
+                else
+                    return get("contents/contains/topic/" + search);
+            }
         }
-    }
-
-    private ArrayList<String> searchFilesByTopic(String username, String filename) {
-
-        return null;
     }
 
     private ArrayList<String> get(String path) {

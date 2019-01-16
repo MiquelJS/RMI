@@ -4,7 +4,6 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ServerStorage {
@@ -14,9 +13,9 @@ public class ServerStorage {
 
     private String path = "C:/Users/Public/";
     private static ArrayList<String> listToReturn;
-    public static ArrayList<String> fileToReturn;
+    private static ArrayList<String> fileToReturn;
 
-    WSConnectionManager wsConn = new WSConnectionManager(InetAddress.getLocalHost().getHostAddress());
+    private WSConnectionManager wsConn = new WSConnectionManager(InetAddress.getLocalHost().getHostAddress());
 
     ServerStorage() throws UnknownHostException {}
 
@@ -110,20 +109,6 @@ public class ServerStorage {
     boolean checkCredentials(String username, String password) {
         String[] userCred = wsConn.getUserCredentials(username).get(0).split(",");
         return username.equals(userCred[0].substring(2,userCred[0].length() - 1)) && password.equals(userCred[1].substring(1, userCred[1].length() - 1));
-        /*
-        try (BufferedReader br = new BufferedReader(new FileReader(path + "Server Storage/ClientCredentials.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if(line.equals(username + "_" + password)) {
-                    br.close();
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-        */
     }
 
     boolean checkUser(String username) {
@@ -133,22 +118,6 @@ public class ServerStorage {
                 return true;
         }
         return false;
-        /*
-        String newPath = createDir(path,"Server Storage/");
-        try (BufferedReader br = new BufferedReader(new FileReader(newPath + "ClientCredentials.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("_");
-                String part1 = parts[0];
-                if(part1.equals(username)) {
-                    br.close();
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            return false;
-        }
-        return false; */
     }
 
     // Creates a folder in the path if not already exist
@@ -176,65 +145,8 @@ public class ServerStorage {
         return Files.exists(Paths.get(serverFilePath));
     }
 
-    ArrayList<String> showMedia(String username, String filename, String type) throws IOException {
-        ArrayList<String> filesNames = wsConn.getFiles(username, filename, type);
-        listToReturn = new ArrayList<>();
-        File[] files;
-        if (username.equals("")) {
-            files = new File("C:/Users/Public/Server Storage/Client Files/").listFiles();
-        } else {
-            files = new File("C:/Users/Public/Server Storage/Client Files/" + username + "/").listFiles();
-        }
-        if (readFiles(files, filename, type)) {
-            return listToReturn;
-        } else {
-            return null;
-        }
-    }
-
-    private boolean readFiles(File[] files, String filename, String type) throws IOException {
-        if (files == null) return false;
-        if(type.equals("ti")) { // Search by title
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    readFiles(file.listFiles(), filename, type); // Calls same method again.
-                } else {
-                    if ((file.getName().contains(filename) && file.getName().contains("description.txt"))){
-                        String st;
-                        BufferedReader br = new BufferedReader(new FileReader(file));
-                        while (( st = br.readLine()) != null){
-                            String[] toReturn = st.split("title: ");
-                            listToReturn.add(toReturn[1]);
-                            break;
-                        }
-                        br.close();
-                    }
-                }
-            }
-        } else { // Search by topic
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    readFiles(file.listFiles(), filename, type); // Calls same method again.
-                } else {
-                    String st;
-                    ArrayList<String> ar = new ArrayList<>();
-                    BufferedReader br = new BufferedReader(new FileReader(file));
-                    while (( st = br.readLine()) != null){
-                        String[] toReturn = st.split("title: ");
-                        for (String str : toReturn){
-                            if((!ar.contains(str))){
-                                ar.add(str);
-                            }
-                        }
-                        if (st.contains(filename) && st.contains("topic:")){
-                            listToReturn.add(ar.get(1));
-                        }
-                    }
-                    br.close();
-                }
-            }
-        }
-        return true;
+    ArrayList<String> showMedia(String username, String search, String type) {
+        return wsConn.getFiles(username, search, type);
     }
 
     boolean changeTitle(String username, int filePosition, String newTitle) throws IOException {

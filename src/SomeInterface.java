@@ -18,7 +18,7 @@ public interface SomeInterface extends Remote {
 
     boolean checkFile(String username, String fileName) throws IOException;
 
-    ArrayList<String> showSearch(String username, String fileName, String type) throws IOException;
+    ArrayList<String> showSearch(String username, String search, String type) throws IOException;
 
     boolean changeTitle(String username, int filePosition, String newTitle) throws IOException;
 
