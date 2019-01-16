@@ -34,7 +34,6 @@ public class WSConnectionManager {
             }
         }
         json = json.substring(0, json.length() - 1).concat("}");
-        System.out.println(json);
         return json;
     }
 
@@ -48,15 +47,11 @@ public class WSConnectionManager {
     }
 
     public ArrayList<String> getAllUsers() {
-        ArrayList<String> users = get("users/all");
-        System.out.println("\nUsers:" + Arrays.toString(users.toArray()) + "\n");
-        return users;
+        return get("users/all");
     }
 
     public ArrayList<String> getUserCredentials(String username) {
-        ArrayList<String> users = get("users/all/" + username);
-        System.out.println("\nUsers Cred:" + Arrays.toString(users.toArray()) + "\n");
-        return users;
+        return get("users/all/" + username);
     }
 
     public ArrayList<String> getFiles(String username, String filename, String type) {
@@ -75,8 +70,11 @@ public class WSConnectionManager {
     }
 
     private ArrayList<String> searchFilesByTitle(String username, String filename) {
-
-        return null;
+        if (username.equals("")) {
+            return get("contents/all");
+        } else {
+            return get("contents/all/" + username);
+        }
     }
 
     private ArrayList<String> searchFilesByTopic(String username, String filename) {
@@ -114,7 +112,7 @@ public class WSConnectionManager {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type", "application/json"); //application/json
+            conn.setRequestProperty("Content-Type", "application/json");
             OutputStream os = conn.getOutputStream();
             os.write(json.getBytes());
             os.flush();

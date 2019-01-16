@@ -1,11 +1,10 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServerStorage {
@@ -109,8 +108,8 @@ public class ServerStorage {
     }
 
     boolean checkCredentials(String username, String password) {
-        ArrayList<String> userCred = wsConn.getUserCredentials(username);
-        return username.equals(userCred.get(0)) && password.equals(userCred.get(1));
+        String[] userCred = wsConn.getUserCredentials(username).get(0).split(",");
+        return username.equals(userCred[0].substring(2,userCred[0].length() - 1)) && password.equals(userCred[1].substring(1, userCred[1].length() - 1));
         /*
         try (BufferedReader br = new BufferedReader(new FileReader(path + "Server Storage/ClientCredentials.txt"))) {
             String line;
