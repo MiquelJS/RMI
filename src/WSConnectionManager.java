@@ -10,38 +10,17 @@ import java.util.List;
 public class WSConnectionManager {
 
     private String serverAddress;
-    private String ngrokWSAddress = "http://88bf2891.ngrok.io/mytubeWeb/rest/";
+    private String ngrokWSAddress = "http://59656c41.ngrok.io/mytubeWeb/rest/";
 
     public WSConnectionManager(String serverAddress) {
         this.serverAddress = serverAddress;
     }
 
     public void postUserCredentials(String username, String password) {
-        try {
-            URL url = new URL(ngrokWSAddress + "users");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json"); //application/json
-            String postToWS = createJSon(Arrays.asList( "username", username,
-                                                        "password", password,
-                                                        "serverAddress", serverAddress));
-            OutputStream os = conn.getOutputStream();
-            os.write(postToWS.getBytes());
-            os.flush();
-
-            if(conn.getResponseCode() != 200){
-                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-            }
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-            BufferedReader br = new BufferedReader(in);
-            String output;
-            while ((output = br.readLine()) != null){
-                System.out.println(output);
-            }
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String json = createJSon(Arrays.asList( "username", username,
+                                                "password", password,
+                                                "serverAddress", serverAddress));
+        post("users", json);
     }
 
     private String createJSon(List<Object> params) {
@@ -60,19 +39,86 @@ public class WSConnectionManager {
     }
 
     public void postFile(String username, String fileName, String title, String topic) {
+        String json = createJSon(Arrays.asList( "username", username,
+                                                "fileName", fileName,
+                                                "title", title,
+                                                "topic", topic,
+                                                "serverAddress", serverAddress));
+        post("contents/" + fileName, json);
+    }
+
+    public ArrayList<String> getAllUsers() {
+        ArrayList<String> users = get("users/all");
+        System.out.println("\nUsers:" + Arrays.toString(users.toArray()) + "\n");
+        return users;
+    }
+
+    public ArrayList<String> getUserCredentials(String username) {
+        ArrayList<String> users = get("users/all/" + username);
+        System.out.println("\nUsers Cred:" + Arrays.toString(users.toArray()) + "\n");
+        return users;
+    }
+
+    public ArrayList<String> getFiles(String username, String filename, String type) {
+        // type = "ti" -> search by title
+            // -> username = "" -> search all files
+            // -> username != "" -> search this user's files
+        // type = "to" -> search by topic
+            // -> username = "" -> search all files
+            // -> username != "" -> search this user's files
+        ArrayList<String> filesNames;
+        if (type.equals("ti"))
+            filesNames = searchFilesByTitle(username, filename);
+        else
+            filesNames = searchFilesByTopic(username, filename);
+        return filesNames;
+    }
+
+    private ArrayList<String> searchFilesByTitle(String username, String filename) {
+
+        return null;
+    }
+
+    private ArrayList<String> searchFilesByTopic(String username, String filename) {
+
+        return null;
+    }
+
+    private ArrayList<String> get(String path) {
+        ArrayList<String> getArray = new ArrayList<>();
         try {
-            URL url = new URL(ngrokWSAddress + "file/" + fileName);
+            URL url = new URL(ngrokWSAddress + path);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setRequestProperty("Accept", "application/json"); //application/json
+            if(conn.getResponseCode() < 200 || conn.getResponseCode() > 200){
+                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
+            }
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            BufferedReader br = new BufferedReader(in);
+            String output;
+            while ((output = br.readLine()) != null){
+                getArray.add(output);
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getArray;
+    }
+
+    private void post(String path, String json) {
+        try {
+            URL url = new URL(ngrokWSAddress + path);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json"); //application/json
-            String postToWS = createJSon(Arrays.asList( "username", username,
-                                                        "fileName", fileName,
-                                                        "title", title,
-                                                        "topic", topic,
-                                                        "serverAddress", serverAddress));
             OutputStream os = conn.getOutputStream();
-            os.write(postToWS.getBytes());
+            os.write(json.getBytes());
             os.flush();
+
             if(conn.getResponseCode() != 200){
                 throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
             }
@@ -87,54 +133,4 @@ public class WSConnectionManager {
             e.printStackTrace();
         }
     }
-
-    public ArrayList<String> getUsers(String username) {
-        ArrayList<String> users = new ArrayList<>();
-        try {
-            URL url = new URL(ngrokWSAddress + "users/" + username);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json"); //application/json
-            if(conn.getResponseCode() < 200 || conn.getResponseCode() > 200){
-                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-            }
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-            BufferedReader br = new BufferedReader(in);
-            String output;
-            while ((output = br.readLine()) != null){
-                users.add(output);
-            }
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("\nUsers:" + Arrays.toString(users.toArray()) + "\n");
-        return users;
-    }
-
-    public ArrayList<String> getFiles(String username, String filename, String type) {
-        // type = "ti" -> search by title
-            // -> username = "" -> search all files
-            // -> username != "" -> search this user's files
-        // type = "to" -> search by topic
-            // -> username = "" -> search all files
-            // -> username != "" -> search this user's files
-        ArrayList<String> filesNames = new ArrayList<>();
-        if (type.equals("ti"))
-            filesNames = searchFilesByTitle(username);
-        else
-            filesNames = searchFilesByTopic(username);
-        return filesNames;
-    }
-
-    private ArrayList<String> searchFilesByTitle(String username) {
-
-        return null;
-    }
-
-    private ArrayList<String> searchFilesByTopic(String username) {
-
-        return null;
-    }
-
 }

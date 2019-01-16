@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,6 +18,7 @@ public class SomeServer {
             String registryURL = "rmi://localhost:" + portNum + "/some";
             Naming.rebind(registryURL, exportedObj);
             System.out.println("Server ready.\n");
+            System.out.println("Remember to update the ngrok address to connect to WebService.\n");
 
         }// end try
         catch (RemoteException | MalformedURLException e) {

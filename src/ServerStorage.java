@@ -109,6 +109,9 @@ public class ServerStorage {
     }
 
     boolean checkCredentials(String username, String password) {
+        ArrayList<String> userCred = wsConn.getUserCredentials(username);
+        return username.equals(userCred.get(0)) && password.equals(userCred.get(1));
+        /*
         try (BufferedReader br = new BufferedReader(new FileReader(path + "Server Storage/ClientCredentials.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -121,10 +124,11 @@ public class ServerStorage {
             e.printStackTrace();
         }
         return false;
+        */
     }
 
-    boolean checkUser(String username) throws MalformedURLException {
-        ArrayList<String> users = wsConn.getUsers(username);
+    boolean checkUser(String username) {
+        ArrayList<String> users = wsConn.getAllUsers();
         for (String user : users) {
             if (user.equals(username))
                 return true;
